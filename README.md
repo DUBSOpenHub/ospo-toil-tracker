@@ -1,4 +1,4 @@
-# 🤖 Toil Tracker
+# 🤖 AI First - Toil Tracker
 
 A lightweight system to surface and track repetitive work that could be automated with agents.
 
