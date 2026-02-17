@@ -14,7 +14,7 @@ We take security seriously! If you discover a security vulnerability in any auto
 
 1. **DO NOT** open a public GitHub issue for security vulnerabilities
 2. Instead, email us at: **security@dubsopenhub.com**
-3. Or use [GitHub's private vulnerability reporting](https://github.com/DUBSOpenHub/toil-tracker/security/advisories/new)
+3. Or use [GitHub's private vulnerability reporting](https://github.com/DUBSOpenHub/ai-first-toil-tracker/security/advisories/new)
 
 ### What to Include
 

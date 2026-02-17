@@ -5,7 +5,7 @@ How we review and prioritize toil ideas as a team.
 ## Weekly Triage (Fridays)
 
 1. **Slack prompt fires** at 10:00 AM PST — team members reply with toil they've encountered
-2. Team members **file issues** using the [Toil Automation Idea](../../issues/new?template=toil-idea.md) template
+2. Team members **file issues** using the [Toil Automation Idea](../../issues/new?template=toil-idea.yml) template
 3. A designated triager reviews new issues labeled `triage`
 
 ## Triage Steps

@@ -4,7 +4,7 @@ Thanks for helping us surface and eliminate toil! Here's how to contribute.
 
 ## Submitting a Toil Idea
 
-1. Click **[Submit a toil idea](../../issues/new?template=toil-idea.md)**
+1. Click **[Submit a toil idea](../../issues/new?template=toil-idea.yml)**
 2. Fill out the template — be specific about frequency and time spent
 3. The team will triage and label your idea
 
