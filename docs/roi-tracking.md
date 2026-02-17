@@ -66,7 +66,7 @@ Use this monthly summary template in Slack or team meetings:
 
 ## Why This Matters
 
-- **Visibility** - Leadership sees the concrete impact of automation work
+- **Visibility** - The team sees the concrete impact of automation work
 - **Momentum** - Celebrating wins encourages more submissions
 - **Prioritization** - Real data helps you pick the highest-ROI toil to automate next
 - **Culture** - Shifts the team mindset from "we've always done it this way" to "let's automate it"
