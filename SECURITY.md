@@ -32,6 +32,6 @@ We take security seriously! If you discover a security vulnerability in any auto
 
 ## 📋 Best Practices
 
-- 🔑 **No secrets in code** — Slack webhook URLs, API tokens, and credentials must be stored as GitHub Secrets or in a secret manager, never committed to the repo
-- 🔐 **Least privilege** — Automations should request only the permissions they need
-- 🔍 **Dependency awareness** — Keep GitHub Actions and any dependencies updated via Dependabot
+- 🔑 **No secrets in code** - Slack webhook URLs, API tokens, and credentials must be stored as GitHub Secrets or in a secret manager, never committed to the repo
+- 🔐 **Least privilege** - Automations should request only the permissions they need
+- 🔍 **Dependency awareness** - Keep GitHub Actions and any dependencies updated via Dependabot

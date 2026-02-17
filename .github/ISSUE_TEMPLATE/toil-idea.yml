@@ -71,6 +71,6 @@ body:
     attributes:
       label: Automation idea (if any)
       description: How might an agent or script handle this?
-      placeholder: Optional — leave blank if you're not sure
+      placeholder: Optional - leave blank if you're not sure
     validations:
       required: false

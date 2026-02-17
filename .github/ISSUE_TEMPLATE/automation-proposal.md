@@ -15,7 +15,7 @@ Use the links in the repo README to view all ideas, in-progress items, and compl
 Closes #
 
 **Proposed solution**
-<!-- Describe the automation approach — agent, script, GitHub Action, Slack workflow, etc. -->
+<!-- Describe the automation approach - agent, script, GitHub Action, Slack workflow, etc. -->
 
 **Tools / tech involved**
 <!-- e.g. GitHub Actions, Python script, Copilot agent, Slack API -->

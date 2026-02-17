@@ -48,6 +48,6 @@ Use this framework to prioritize which toil to automate first.
 
 Add **+10** to the score if any of these apply:
 
-- ❌ **Error-prone** — The toil frequently leads to mistakes
-- 😤 **Morale killer** — The toil is particularly frustrating or demoralizing
-- 🔗 **Blocking** — The toil blocks other people or processes
+- ❌ **Error-prone** - The toil frequently leads to mistakes
+- 😤 **Morale killer** - The toil is particularly frustrating or demoralizing
+- 🔗 **Blocking** - The toil blocks other people or processes

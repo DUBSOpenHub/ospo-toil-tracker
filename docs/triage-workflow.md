@@ -4,7 +4,7 @@ How we review and prioritize toil ideas as a team.
 
 ## Weekly Triage (Fridays)
 
-1. **Slack prompt fires** at 10:00 AM PST — team members reply with toil they've encountered
+1. **Slack prompt fires** at 10:00 AM PST - team members reply with toil they've encountered
 2. Team members **file issues** using the [Toil Automation Idea](../../issues/new?template=toil-idea.yml) template
 3. A designated triager reviews new issues labeled `triage`
 
@@ -44,7 +44,7 @@ When the automation is live and verified:
 
 Over time, measure your team's progress:
 
-- **Total toil ideas submitted** — Are people engaged?
-- **Ideas automated** — How many have been eliminated?
-- **Estimated time saved per week** — Sum of (frequency × time) for all automated items
-- **Average time from idea → automation** — How fast are you shipping?
+- **Total toil ideas submitted** - Are people engaged?
+- **Ideas automated** - How many have been eliminated?
+- **Estimated time saved per week** - Sum of (frequency × time) for all automated items
+- **Average time from idea → automation** - How fast are you shipping?

@@ -50,7 +50,7 @@ Monthly savings = Frequency × Time per occurrence × People affected
 
 Use this monthly summary template in Slack or team meetings:
 
-> **🤖 Toil Tracker — Monthly Update**
+> **🤖 Toil Tracker - Monthly Update**
 >
 > - **X** toil ideas submitted this month
 > - **X** automations completed
@@ -59,14 +59,14 @@ Use this monthly summary template in Slack or team meetings:
 > - **ROI: X×** return on time invested
 >
 > Top wins:
-> - [Automation name] — saves X hrs/mo
-> - [Automation name] — saves X hrs/mo
+> - [Automation name] - saves X hrs/mo
+> - [Automation name] - saves X hrs/mo
 >
 > 👉 Got toil? [File it here](../../issues/new?template=toil-idea.yml)
 
 ## Why This Matters
 
-- **Visibility** — Leadership sees the concrete impact of automation work
-- **Momentum** — Celebrating wins encourages more submissions
-- **Prioritization** — Real data helps you pick the highest-ROI toil to automate next
-- **Culture** — Shifts the team mindset from "we've always done it this way" to "let's automate it"
+- **Visibility** - Leadership sees the concrete impact of automation work
+- **Momentum** - Celebrating wins encourages more submissions
+- **Prioritization** - Real data helps you pick the highest-ROI toil to automate next
+- **Culture** - Shifts the team mindset from "we've always done it this way" to "let's automate it"

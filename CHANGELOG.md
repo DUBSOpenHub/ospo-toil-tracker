@@ -21,4 +21,4 @@ All notable changes to this project will be documented in this file.
 - Common toil examples for team inspiration
 - ROI tracking guide with monthly summary template
 - Contributing guide, Code of Conduct, Security policy, License (MIT)
-- Fork-friendly design — any team can fork and use in under 10 minutes
+- Fork-friendly design - any team can fork and use in under 10 minutes

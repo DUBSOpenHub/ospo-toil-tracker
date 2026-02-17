@@ -5,23 +5,23 @@ Thanks for helping us surface and eliminate toil! Here's how to contribute.
 ## Submitting a Toil Idea
 
 1. Click **[Submit a toil idea](../../issues/new?template=toil-idea.yml)**
-2. Fill out the template — be specific about frequency and time spent
+2. Fill out the template - be specific about frequency and time spent
 3. The team will triage and label your idea
 
 ### What makes a good toil submission?
 
-- **Specific** — "I manually copy deploy logs into a spreadsheet every release" is better than "deployments are annoying"
-- **Measurable** — Include how often it happens and how long it takes
-- **Actionable** — Suggest how it could be automated, if you have ideas
+- **Specific** - "I manually copy deploy logs into a spreadsheet every release" is better than "deployments are annoying"
+- **Measurable** - Include how often it happens and how long it takes
+- **Actionable** - Suggest how it could be automated, if you have ideas
 
 ## Prioritization
 
 The team reviews new submissions during our weekly check-in. We prioritize by:
 
-1. **Time saved** — How much total team time does this toil consume?
-2. **Frequency** — Daily toil > monthly toil
-3. **Number of people affected** — Team-wide > individual
-4. **Automation feasibility** — Quick wins get prioritized early
+1. **Time saved** - How much total team time does this toil consume?
+2. **Frequency** - Daily toil > monthly toil
+3. **Number of people affected** - Team-wide > individual
+4. **Automation feasibility** - Quick wins get prioritized early
 
 ## Building an Automation
 
@@ -46,4 +46,4 @@ Once a toil idea is approved:
 
 ## Code of Conduct
 
-Be respectful and constructive. No toil is too small to mention — the goal is to make everyone's work life better.
+Be respectful and constructive. No toil is too small to mention - the goal is to make everyone's work life better.

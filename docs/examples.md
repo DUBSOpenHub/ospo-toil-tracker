@@ -50,4 +50,4 @@ Not sure what counts as toil? Here are real-world examples to inspire your team.
 
 ---
 
-💡 **Tip:** If you find yourself saying _"I do this every week"_ or _"I wish this just happened automatically"_ — that's toil. File it!
+💡 **Tip:** If you find yourself saying _"I do this every week"_ or _"I wish this just happened automatically"_ - that's toil. File it!
