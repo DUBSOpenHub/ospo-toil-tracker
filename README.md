@@ -29,6 +29,7 @@ All toil ideas and automation proposals are tracked as **GitHub Issues** in this
 | 🏷️ **Needs triage** | [View](../../issues?q=is%3Aissue+label%3Atriage+is%3Aopen+sort%3Acreated-desc) |
 | 🔨 **In progress** | [View](../../issues?q=is%3Aissue+label%3Ain-progress+is%3Aopen+sort%3Acreated-desc) |
 | ✅ **Automated (done)** | [View](../../issues?q=is%3Aissue+label%3Aautomated+sort%3Acreated-desc) |
+| 🎉 **Wins & time saved** | [View](../../issues?q=is%3Aissue+%22%5BWIN%5D%22+label%3Aautomated+sort%3Acreated-desc) |
 
 > **Tip:** Each issue shows the submitter's name, frequency (🔴🟠🟡🔵⚪), time cost, and who's affected — all visible in the issue body. Sort by newest, most commented, or filter by label to find what matters most.
 
@@ -38,7 +39,8 @@ All toil ideas and automation proposals are tracked as **GitHub Issues** in this
 2. **File an issue** — Use the [Toil Automation Idea](../../issues/new?template=toil-idea.yml) template to log ideas
 3. **Score & prioritize** — Rate ideas using the [scoring guide](docs/scoring-guide.md) and triage as a team
 4. **Propose a solution** — Use the [Automation Proposal](../../issues/new?template=automation-proposal.md) template
-5. **Build & ship** — Automate the toil and eliminate it for good 🎉
+5. **Build & ship** — Automate the toil and eliminate it for good
+6. **Log the win** — Use the [Log Completed Automation](../../issues/new?template=log-win.yml) template to record time saved 🎉
 
 ## Quick Links
 
@@ -47,6 +49,7 @@ All toil ideas and automation proposals are tracked as **GitHub Issues** in this
 - [📋 View all toil ideas](../../issues?q=is%3Aissue+label%3Atoil)
 - [🏷️ Triage queue](../../issues?q=is%3Aissue+label%3Atriage+is%3Aopen)
 - [✅ Automated (completed)](../../issues?q=is%3Aissue+label%3Aautomated)
+- [🎉 Log a win](../../issues/new?template=log-win.yml)
 
 ## Documentation
 
@@ -54,6 +57,7 @@ All toil ideas and automation proposals are tracked as **GitHub Issues** in this
 |-----|-------------|
 | [Scoring Guide](docs/scoring-guide.md) | How to prioritize toil by impact |
 | [Triage Workflow](docs/triage-workflow.md) | Step-by-step process for reviewing ideas |
+| [ROI Tracking](docs/roi-tracking.md) | Measure and share time saved |
 | [Examples](docs/examples.md) | Common toil patterns to inspire your team |
 | [Contributing](CONTRIBUTING.md) | How to submit ideas and build automations |
 | [Code of Conduct](CODE_OF_CONDUCT.md) | Community standards |

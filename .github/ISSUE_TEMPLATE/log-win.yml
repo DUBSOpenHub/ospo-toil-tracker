@@ -1,0 +1,101 @@
+name: Log Completed Automation
+description: Record the results when a toil item has been automated
+title: "[WIN] "
+labels: [automated]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        🎉 **Nice work!** Use this to log the impact of a completed automation.
+        This helps the team see the ROI and builds the case for more automation investment.
+
+  - type: input
+    id: submitter
+    attributes:
+      label: Your name
+      placeholder: e.g. Jane Smith
+    validations:
+      required: true
+
+  - type: input
+    id: related-issue
+    attributes:
+      label: Related toil issue
+      description: Link to the original toil idea
+      placeholder: "#12"
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-was-automated
+    attributes:
+      label: What was automated?
+      description: Brief description of the toil that was eliminated
+      placeholder: e.g. "Deploy tracker spreadsheet is now auto-updated by a GitHub Action"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: original-frequency
+    attributes:
+      label: How often did this toil happen?
+      options:
+        - 🔴 Multiple times per day
+        - 🟠 Daily
+        - 🟡 Multiple times per week
+        - 🔵 Weekly
+        - ⚪ Monthly or less
+    validations:
+      required: true
+
+  - type: dropdown
+    id: time-saved-per-occurrence
+    attributes:
+      label: Time saved per occurrence
+      options:
+        - "5 minutes"
+        - "15 minutes"
+        - "30 minutes"
+        - "1 hour"
+        - "2+ hours"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: people-benefited
+    attributes:
+      label: How many people benefit?
+      options:
+        - 1 person
+        - 2–3 people
+        - 4–6 people
+        - Entire team
+        - Multiple teams / org-wide
+    validations:
+      required: true
+
+  - type: input
+    id: estimated-monthly-savings
+    attributes:
+      label: Estimated time saved per month
+      description: Multiply frequency × time × people
+      placeholder: e.g. "10 hours/month"
+    validations:
+      required: true
+
+  - type: input
+    id: effort-to-build
+    attributes:
+      label: How long did it take to build?
+      placeholder: e.g. "3 hours"
+    validations:
+      required: true
+
+  - type: textarea
+    id: link-to-automation
+    attributes:
+      label: Link to the automation
+      description: PR, Action, script, repo, etc.
+      placeholder: e.g. https://github.com/org/repo/pull/42
+    validations:
+      required: false
