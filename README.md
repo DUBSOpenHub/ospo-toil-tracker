@@ -80,3 +80,11 @@ This repo includes a **stale issue workflow** that:
 ## License
 
 [MIT](LICENSE)
+
+---
+
+## 🐙 Built with Love
+
+Made with 💜 by DUBSOpenHub to help more people discover the joy of GitHub Copilot CLI.
+
+Happy learning! 🚀✨
