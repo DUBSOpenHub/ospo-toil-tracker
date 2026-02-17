@@ -4,16 +4,29 @@ A lightweight system to surface and track repetitive work that could be automate
 
 ## How It Works
 
-1. **Weekly Slack ping** — Every Friday, the team is asked: _"What toil could be automated?"_
+1. **Weekly Slack ping** — Every Friday at 10:00 AM PST, the team is asked: _"What toil could be automated?"_
 2. **File an issue** — Use the [Toil Automation Idea](../../issues/new?template=toil-idea.md) template to log ideas
-3. **Prioritize** — The team reviews and prioritizes ideas by impact and frequency
-4. **Automate** — Build agents to eliminate the highest-impact toil
+3. **Score & prioritize** — Rate ideas using the [scoring guide](docs/scoring-guide.md) and triage as a team
+4. **Propose a solution** — Use the [Automation Proposal](../../issues/new?template=automation-proposal.md) template
+5. **Build & ship** — Automate the toil and eliminate it for good 🎉
 
 ## Quick Links
 
 - [📝 Submit a toil idea](../../issues/new?template=toil-idea.md)
+- [🔧 Propose an automation](../../issues/new?template=automation-proposal.md)
 - [📋 View all toil ideas](../../issues?q=is%3Aissue+label%3Atoil)
 - [🏷️ Triage queue](../../issues?q=is%3Aissue+label%3Atriage+is%3Aopen)
+- [✅ Automated (completed)](../../issues?q=is%3Aissue+label%3Aautomated)
+
+## Documentation
+
+| Doc | Description |
+|-----|-------------|
+| [Scoring Guide](docs/scoring-guide.md) | How to prioritize toil by impact |
+| [Triage Workflow](docs/triage-workflow.md) | Step-by-step process for reviewing ideas |
+| [Examples](docs/examples.md) | Common toil patterns to inspire your team |
+| [Contributing](CONTRIBUTING.md) | How to submit ideas and build automations |
+| [Security](SECURITY.md) | Security policy for automations |
 
 ## Slack Setup
 
@@ -30,6 +43,8 @@ Set up a weekly reminder in your team channel using Slack Workflow Builder:
 >
 > Reply in-thread with what the toil is, how often it happens, and how long it takes.
 > Then file it 👉 [Submit a toil idea](https://github.com/DUBSOpenHub/toil-tracker/issues/new?template=toil-idea.md)
+>
+> Not sure what counts? Check out the [examples](https://github.com/DUBSOpenHub/toil-tracker/blob/main/docs/examples.md).
 
 ## Labels
 
@@ -41,3 +56,14 @@ Set up a weekly reminder in your team channel using Slack Workflow Builder:
 | `quick-win` | Could be automated quickly |
 | `in-progress` | Automation is being built |
 | `automated` | Toil has been eliminated 🎉 |
+
+## Automations
+
+This repo includes a **stale issue workflow** that:
+- Nudges toil ideas with no activity after 30 days
+- Auto-closes after 60 days of inactivity
+- Exempts issues labeled `in-progress`, `automated`, or `high-impact`
+
+## License
+
+[MIT](LICENSE)

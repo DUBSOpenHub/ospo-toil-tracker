@@ -1,0 +1,24 @@
+name: Stale Toil Reminder
+on:
+  schedule:
+    - cron: '0 18 1 * *'  # 1st of each month at 10am PST (18:00 UTC)
+
+jobs:
+  stale-check:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/stale@v9
+        with:
+          stale-issue-message: >
+            👋 This toil idea has been open for 30+ days without progress.
+            Is it still relevant? If so, consider scoring it using our
+            [scoring guide](https://github.com/DUBSOpenHub/toil-tracker/blob/main/docs/scoring-guide.md)
+            and assigning someone to automate it.
+          stale-issue-label: stale
+          days-before-stale: 30
+          days-before-close: 60
+          close-issue-message: >
+            🗂️ Closing this toil idea due to inactivity. Reopen it anytime if the toil is still happening!
+          exempt-issue-labels: 'in-progress,automated,high-impact'

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discuss in Slack
+    url: https://slack.com
+    about: Chat about toil ideas in our team Slack channel before filing an issue
