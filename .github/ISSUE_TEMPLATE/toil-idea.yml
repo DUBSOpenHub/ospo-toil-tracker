@@ -1,0 +1,76 @@
+name: Toil Automation Idea
+description: Log a repetitive task that could be automated
+title: "[TOIL] "
+labels: [toil, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        📍 **Where to review all submissions:**
+        [All ideas](https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Atoil) · [Triage queue](https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Atriage+is%3Aopen) · [In progress](https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Ain-progress+is%3Aopen) · [Completed](https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Aautomated)
+
+  - type: input
+    id: submitter
+    attributes:
+      label: Your name
+      description: So the team knows who submitted this
+      placeholder: e.g. Jane Smith
+    validations:
+      required: true
+
+  - type: textarea
+    id: toil
+    attributes:
+      label: What's the toil?
+      description: Describe the repetitive task
+      placeholder: e.g. "I manually copy deploy logs into a spreadsheet after every release"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: How often does it happen?
+      options:
+        - 🔴 Multiple times per day
+        - 🟠 Daily
+        - 🟡 Multiple times per week
+        - 🔵 Weekly
+        - ⚪ Monthly or less
+    validations:
+      required: true
+
+  - type: dropdown
+    id: time-per-occurrence
+    attributes:
+      label: How long does it take each time?
+      options:
+        - "< 5 minutes"
+        - "5–15 minutes"
+        - "15–30 minutes"
+        - "30–60 minutes"
+        - "> 1 hour"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: people-affected
+    attributes:
+      label: Who is affected?
+      options:
+        - Just me
+        - 2–3 people
+        - 4–6 people
+        - Entire team
+        - Multiple teams / org-wide
+    validations:
+      required: true
+
+  - type: textarea
+    id: automation-idea
+    attributes:
+      label: Automation idea (if any)
+      description: How might an agent or script handle this?
+      placeholder: Optional — leave blank if you're not sure
+    validations:
+      required: false

@@ -8,10 +8,12 @@ All toil ideas and automation proposals are tracked as **GitHub Issues** in this
 
 | View | Link |
 |------|------|
-| 📋 **All toil ideas** | [View](../../issues?q=is%3Aissue+label%3Atoil) |
-| 🏷️ **Needs triage** | [View](../../issues?q=is%3Aissue+label%3Atriage+is%3Aopen) |
-| 🔨 **In progress** | [View](../../issues?q=is%3Aissue+label%3Ain-progress+is%3Aopen) |
-| ✅ **Automated (done)** | [View](../../issues?q=is%3Aissue+label%3Aautomated) |
+| 📋 **All toil ideas** | [View](../../issues?q=is%3Aissue+label%3Atoil+sort%3Acreated-desc) |
+| 🏷️ **Needs triage** | [View](../../issues?q=is%3Aissue+label%3Atriage+is%3Aopen+sort%3Acreated-desc) |
+| 🔨 **In progress** | [View](../../issues?q=is%3Aissue+label%3Ain-progress+is%3Aopen+sort%3Acreated-desc) |
+| ✅ **Automated (done)** | [View](../../issues?q=is%3Aissue+label%3Aautomated+sort%3Acreated-desc) |
+
+> **Tip:** Each issue shows the submitter's name, frequency (🔴🟠🟡🔵⚪), time cost, and who's affected — all visible in the issue body. Sort by newest, most commented, or filter by label to find what matters most.
 
 ## How It Works
 
