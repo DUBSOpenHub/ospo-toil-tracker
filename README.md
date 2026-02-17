@@ -41,8 +41,7 @@ Set up a weekly reminder in your team channel using Slack Workflow Builder:
 >
 > What repetitive work are you doing that could be automated with an agent?
 >
-> Reply in-thread with what the toil is, how often it happens, and how long it takes.
-> Then file it 👉 [Submit a toil idea](https://github.com/DUBSOpenHub/toil-tracker/issues/new?template=toil-idea.md)
+> 👉 [File it here](https://github.com/DUBSOpenHub/toil-tracker/issues/new?template=toil-idea.md) — takes 2 minutes.
 >
 > Not sure what counts? Check out the [examples](https://github.com/DUBSOpenHub/toil-tracker/blob/main/docs/examples.md).
 
