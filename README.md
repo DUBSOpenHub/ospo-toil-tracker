@@ -1,6 +1,23 @@
 # 🤖 AI First - Toil Tracker
 
-A lightweight system to surface and track repetitive work that could be automated with agents.
+**Stop doing repetitive work. Start automating it.**
+
+Every team has toil — the manual, repetitive tasks that eat up time and could be handled by an agent or script. This repo gives your team a simple, ready-to-use system to surface that toil, track it, and eliminate it.
+
+> 💡 **This is for any team.** Fork it, set up a weekly Slack reminder, and start collecting ideas in under 10 minutes. No code required.
+
+---
+
+## 🍴 Get Started (Any Team)
+
+1. **[Fork this repo](../../fork)** — you get everything: issue templates, labels, workflows, scoring guides, and docs
+2. **Update one URL** — in the [Slack Setup](#slack-setup) section below, replace `<YOUR_ORG>/<YOUR_REPO>` with your fork's path
+3. **Create a Slack reminder** — follow the [3-step Slack setup](#slack-setup) to ping your team every Friday
+4. **Start collecting ideas** — your team clicks the link, fills out a 2-minute form, done
+
+That's it. Your team now has a living backlog of automation opportunities.
+
+---
 
 ## Where Everything Lives
 
@@ -82,17 +99,6 @@ This repo includes a **stale issue workflow** that:
 ## License
 
 [MIT](LICENSE)
-
----
-
-## 🍴 Fork & Use
-
-Any team can use this — just fork and go:
-
-1. Click **Fork** at the top of this repo
-2. Update the Slack message URL in the README to point to your fork
-3. Set up the [Slack Workflow](#slack-setup) in your team's channel
-4. That's it — labels, templates, workflows, and docs all come with the fork
 
 ---
 
