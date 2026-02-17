@@ -18,14 +18,14 @@ All toil ideas and automation proposals are tracked as **GitHub Issues** in this
 ## How It Works
 
 1. **Weekly Slack ping** — Every Friday at 10:00 AM PST, the team is asked: _"What toil could be automated?"_
-2. **File an issue** — Use the [Toil Automation Idea](../../issues/new?template=toil-idea.md) template to log ideas
+2. **File an issue** — Use the [Toil Automation Idea](../../issues/new?template=toil-idea.yml) template to log ideas
 3. **Score & prioritize** — Rate ideas using the [scoring guide](docs/scoring-guide.md) and triage as a team
 4. **Propose a solution** — Use the [Automation Proposal](../../issues/new?template=automation-proposal.md) template
 5. **Build & ship** — Automate the toil and eliminate it for good 🎉
 
 ## Quick Links
 
-- [📝 Submit a toil idea](../../issues/new?template=toil-idea.md)
+- [📝 Submit a toil idea](../../issues/new?template=toil-idea.yml)
 - [🔧 Propose an automation](../../issues/new?template=automation-proposal.md)
 - [📋 View all toil ideas](../../issues?q=is%3Aissue+label%3Atoil)
 - [🏷️ Triage queue](../../issues?q=is%3Aissue+label%3Atriage+is%3Aopen)
@@ -55,9 +55,11 @@ Set up a weekly reminder in your team channel using Slack Workflow Builder:
 >
 > What repetitive work are you doing that could be automated with an agent?
 >
-> 👉 [File it here](https://github.com/DUBSOpenHub/toil-tracker/issues/new?template=toil-idea.md) — takes 2 minutes.
+> 👉 File it here: `https://github.com/<YOUR_ORG>/<YOUR_REPO>/issues/new?template=toil-idea.yml` — takes 2 minutes.
 >
-> Not sure what counts? Check out the [examples](https://github.com/DUBSOpenHub/toil-tracker/blob/main/docs/examples.md).
+> Not sure what counts? Check out the examples in the repo's `docs/examples.md`.
+
+> ⚠️ **Replace** `<YOUR_ORG>/<YOUR_REPO>` with your actual repo path (e.g. `DUBSOpenHub/toil-tracker`).
 
 ## Labels
 
@@ -80,6 +82,17 @@ This repo includes a **stale issue workflow** that:
 ## License
 
 [MIT](LICENSE)
+
+---
+
+## 🍴 Fork & Use
+
+Any team can use this — just fork and go:
+
+1. Click **Fork** at the top of this repo
+2. Update the Slack message URL in the README to point to your fork
+3. Set up the [Slack Workflow](#slack-setup) in your team's channel
+4. That's it — labels, templates, workflows, and docs all come with the fork
 
 ---
 

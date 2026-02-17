@@ -6,10 +6,8 @@ labels: in-progress
 ---
 
 <!-- 📍 WHERE THIS GETS TRACKED
-All automation proposals are tracked as issues in this repo. Use these views to find and review them:
-  • All ideas:      https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Atoil
-  • In progress:    https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Ain-progress+is%3Aopen
-  • Completed:      https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Aautomated
+All automation proposals are tracked as issues in this repo.
+Use the links in the repo README to view all ideas, in-progress items, and completed automations.
 -->
 
 **Related toil issue**
