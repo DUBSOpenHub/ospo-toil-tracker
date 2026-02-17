@@ -2,6 +2,17 @@
 
 A lightweight system to surface and track repetitive work that could be automated with agents.
 
+## Where Everything Lives
+
+All toil ideas and automation proposals are tracked as **GitHub Issues** in this repo. Bookmark these views:
+
+| View | Link |
+|------|------|
+| 📋 **All toil ideas** | [View](../../issues?q=is%3Aissue+label%3Atoil) |
+| 🏷️ **Needs triage** | [View](../../issues?q=is%3Aissue+label%3Atriage+is%3Aopen) |
+| 🔨 **In progress** | [View](../../issues?q=is%3Aissue+label%3Ain-progress+is%3Aopen) |
+| ✅ **Automated (done)** | [View](../../issues?q=is%3Aissue+label%3Aautomated) |
+
 ## How It Works
 
 1. **Weekly Slack ping** — Every Friday at 10:00 AM PST, the team is asked: _"What toil could be automated?"_

@@ -5,6 +5,14 @@ title: "[TOIL] "
 labels: toil, triage
 ---
 
+<!-- 📍 WHERE THIS GETS TRACKED
+All toil ideas are tracked as issues in this repo. Use these views to find and review them:
+  • All ideas:      https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Atoil
+  • Triage queue:   https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Atriage+is%3Aopen
+  • In progress:    https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Ain-progress+is%3Aopen
+  • Completed:      https://github.com/DUBSOpenHub/toil-tracker/issues?q=is%3Aissue+label%3Aautomated
+-->
+
 **What's the toil?**
 <!-- Describe the repetitive task (e.g. "manually updating the deployment tracker spreadsheet") -->
 
