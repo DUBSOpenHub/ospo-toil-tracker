@@ -1,19 +1,37 @@
-# Security Policy
+# 🔒 Security Policy
 
-## Reporting a Vulnerability
+## 🛡️ Supported Versions
 
-If you discover a security vulnerability in any automation built from this tracker, please report it responsibly:
+| Version | Supported |
+|---------|-----------|
+| Latest  | ✅ Yes     |
 
-1. **Do not** open a public issue
-2. Email the maintainers directly (see repo contacts)
-3. Include a description of the vulnerability and steps to reproduce
+## 🚨 Reporting a Vulnerability
 
-We will acknowledge your report within 48 hours and provide a timeline for a fix.
+We take security seriously! If you discover a security vulnerability in any automation built from this tracker, **please report it responsibly**.
 
-## Scope
+### How to Report
 
-This repository primarily tracks toil ideas and lightweight automations. Security concerns may include:
+1. **DO NOT** open a public GitHub issue for security vulnerabilities
+2. Instead, email us at: **security@dubsopenhub.com**
+3. Or use [GitHub's private vulnerability reporting](https://github.com/DUBSOpenHub/toil-tracker/security/advisories/new)
 
-- **Webhook secrets** — Ensure Slack webhook URLs are stored as secrets, never in code
-- **API tokens** — Any automation scripts must use environment variables or secret managers for credentials
-- **Permissions** — Automations should follow the principle of least privilege
+### What to Include
+
+- 📝 Description of the vulnerability
+- 🔄 Steps to reproduce
+- 💥 Potential impact
+- 💡 Suggested fix (if you have one)
+
+### What to Expect
+
+- ⏱️ **Acknowledgment** within 48 hours
+- 🔍 **Assessment** within 1 week
+- 🛠️ **Fix or mitigation** as quickly as possible
+- 🎉 **Credit** in the release notes (unless you prefer anonymity)
+
+## 📋 Best Practices
+
+- 🔑 **No secrets in code** — Slack webhook URLs, API tokens, and credentials must be stored as GitHub Secrets or in a secret manager, never committed to the repo
+- 🔐 **Least privilege** — Automations should request only the permissions they need
+- 🔍 **Dependency awareness** — Keep GitHub Actions and any dependencies updated via Dependabot

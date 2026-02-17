@@ -39,6 +39,7 @@ All toil ideas and automation proposals are tracked as **GitHub Issues** in this
 | [Triage Workflow](docs/triage-workflow.md) | Step-by-step process for reviewing ideas |
 | [Examples](docs/examples.md) | Common toil patterns to inspire your team |
 | [Contributing](CONTRIBUTING.md) | How to submit ideas and build automations |
+| [Code of Conduct](CODE_OF_CONDUCT.md) | Community standards |
 | [Security](SECURITY.md) | Security policy for automations |
 
 ## Slack Setup
