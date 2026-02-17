@@ -11,9 +11,10 @@ Every team has toil — the manual, repetitive tasks that eat up time and could 
 ## 🍴 Get Started (Any Team)
 
 1. **[Fork this repo](../../fork)** — you get everything: issue templates, labels, workflows, scoring guides, and docs
-2. **Update one URL** — in the [Slack Setup](#slack-setup) section below, replace `<YOUR_ORG>/<YOUR_REPO>` with your fork's path
-3. **Create a Slack reminder** — follow the [3-step Slack setup](#slack-setup) to ping your team every Friday
-4. **Start collecting ideas** — your team clicks the link, fills out a 2-minute form, done
+2. **Enable GitHub Actions** — go to the **Actions** tab in your fork and click **"I understand my workflows, go ahead and enable them"**
+3. **Update two URLs** — in the [Slack Setup](#slack-setup) section, replace `<YOUR_ORG>/<YOUR_REPO>` with your fork's path. Also update the Slack channel link in `.github/ISSUE_TEMPLATE/config.yml`
+4. **Create a Slack reminder** — follow the [3-step Slack setup](#slack-setup) to ping your team every Friday
+5. **Start collecting ideas** — your team clicks the link, fills out a 2-minute form, done
 
 That's it. Your team now has a living backlog of automation opportunities.
 

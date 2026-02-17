@@ -1,5 +1,6 @@
 name: Stale Toil Reminder
 on:
+  workflow_dispatch:  # allows manual testing
   schedule:
     - cron: '0 18 1 * *'  # 1st of each month at 10am PST (18:00 UTC)
 
