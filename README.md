@@ -20,7 +20,7 @@ A lightweight system to surface and track repetitive work that could be automate
 Set up a weekly reminder in your team channel using Slack Workflow Builder:
 
 1. Open Slack → **Tools** → **Workflow Builder** → **Create Workflow**
-2. Trigger: **On a schedule** → Every Friday at 9:00 AM
+2. Trigger: **On a schedule** → Every Friday at 10:00 AM PST
 3. Add step: **Send a message to a channel** (e.g. `#team-toil`)
 4. Paste this message:
 
