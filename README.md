@@ -38,7 +38,7 @@ All toil ideas and automation proposals are tracked as **GitHub Issues** in this
 
 1. **Weekly Slack ping** - Every Friday at 10:00 AM PST, the team is asked: _"What toil could be automated?"_
 2. **File an issue** - Use the [Toil Automation Idea](../../issues/new?template=toil-idea.yml) template to log ideas
-3. **Score & prioritize** - Rate ideas using the [scoring guide](docs/scoring-guide.md) and triage as a team
+3. **AI auto-triages** - An agent scores the idea, applies labels, estimates time saved, and suggests an automation approach
 4. **Propose a solution** - Use the [Automation Proposal](../../issues/new?template=automation-proposal.md) template
 5. **Build & ship** - Automate the toil and eliminate it for good
 6. **Log the win** - Use the [Log Completed Automation](../../issues/new?template=log-win.yml) template to record time saved 🎉
@@ -96,7 +96,16 @@ Set up a weekly reminder in your team channel using Slack Workflow Builder:
 
 ## Automations
 
-This repo includes a **stale issue workflow** that:
+### 🤖 AI Triage (on every new issue)
+When a toil idea is submitted, an AI agent automatically:
+- **Calculates the toil score** (frequency x time x people)
+- **Applies the frequency label** (🔴🟠🟡🔵⚪)
+- **Flags high-impact items** (score 20+)
+- **Estimates monthly time saved** if automated
+- **Suggests an automation approach** using AI
+- **Removes the `triage` label** - no manual triage needed
+
+### 🗂️ Stale Issue Cleanup (monthly)
 - Nudges toil ideas with no activity after 30 days
 - Auto-closes after 60 days of inactivity
 - Exempts issues labeled `in-progress`, `automated`, or `high-impact`
