@@ -21,6 +21,18 @@ This isn't just a tracker - AI is built into the workflow:
 
 **The human role:** Describe the pain. The AI handles the rest.
 
+## Why Use This
+
+For anyone doing repetitive work who wants to apply AI-first thinking, AI First - Toil Tracker makes it easy to:
+
+- 🎯 **Capture** - Quickly log toil ideas from a single Slack link in under 2 minutes
+- 🤖 **Identify** - AI auto-scores every idea and surfaces the highest-leverage opportunities
+- ⚡ **Automate** - Get AI-suggested solutions with agents, scripts, and workflows
+- 📈 **Measure** - Track time saved and see the real impact on your team
+- 🔁 **Build the habit** - A weekly Slack prompt keeps the team thinking AI-first
+
+All within Slack and GitHub - no new tools, no new logins. Just a way to find leverage for you and your team.
+
 ---
 
 ## 🍴 Get Started (Any Team)
