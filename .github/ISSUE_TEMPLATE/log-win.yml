@@ -12,8 +12,9 @@ body:
   - type: input
     id: submitter
     attributes:
-      label: Your name
-      placeholder: e.g. Jane Smith
+      label: Your name and GitHub handle
+      description: So the team knows who completed this and can tag you on updates
+      placeholder: e.g. Jane Smith (@janesmith)
     validations:
       required: true
 
