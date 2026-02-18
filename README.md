@@ -33,6 +33,41 @@ For anyone doing repetitive work who wants to apply AI-first thinking, AI First 
 
 All within Slack and GitHub - no new tools, no new logins. Just a way to find leverage for you and your team.
 
+## What Happens When You Submit
+
+Here's exactly what the AI agent does when someone files a toil idea:
+
+```
+You click the Slack link
+    └─> GitHub issue form opens
+         └─> You fill it out (name, toil, frequency, time, people)
+              └─> You hit Submit
+                   └─> 🤖 AI Agent kicks in automatically
+                        │
+                        ├─ 1. Reads your form answers
+                        ├─ 2. Calculates your toil score (frequency x time x people)
+                        ├─ 3. Applies the frequency label (🔴🟠🟡🔵⚪)
+                        ├─ 4. Flags it as high-impact if score is 20+
+                        ├─ 5. Estimates how much team time this wastes per month
+                        ├─ 6. Calls GitHub Models API to suggest how to automate it
+                        ├─ 7. Posts a triage comment with the full breakdown
+                        └─ 8. Removes the "triage" label (done - no human needed)
+```
+
+**Example agent comment on your issue:**
+
+> ## 🤖 AI Triage Report
+> **Toil Score:** Frequency (5) x Time (3) x People (5) = **75**
+> **Priority:** 🔴 Critical - automate immediately
+> **Estimated team time saved if automated:** ~75 hours/month
+>
+> ### 💡 Suggested Automation Approach
+> A GitHub Action triggered on release events could pull PR titles and
+> auto-generate release notes into a markdown file, then post a summary
+> to the team Slack channel. Estimated effort: 2-3 hours.
+
+The whole process takes about 30 seconds. No one needs to triage, score, or label anything.
+
 ---
 
 ## 🍴 Get Started (Any Team)
