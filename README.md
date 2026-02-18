@@ -6,6 +6,21 @@ Every team has toil - the manual, repetitive tasks that eat up time and could be
 
 > 💡 **This is for any team.** Fork it, set up a weekly Slack reminder, and start collecting ideas in under 10 minutes. No code required.
 
+## How AI Is Used
+
+This isn't just a tracker - AI is built into the workflow:
+
+| What happens | How AI does it |
+|-------------|---------------|
+| Someone submits a toil idea | A **GitHub Actions workflow** fires automatically |
+| The idea needs to be scored | AI **parses the form fields** and calculates the toil score (frequency x time x people) |
+| The idea needs labels | AI **applies the right frequency label** (🔴🟠🟡🔵⚪) and flags high-impact items |
+| The team needs to know what to automate | AI **estimates monthly time saved** and ranks by ROI |
+| Nobody knows how to automate it | AI **suggests a specific automation approach** (GitHub Action, script, agent, etc.) using GitHub Models |
+| The idea sits untriaged | AI **removes the triage label** - no manual triage needed |
+
+**The human role:** Describe the pain. The AI handles the rest.
+
 ---
 
 ## 🍴 Get Started (Any Team)
