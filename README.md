@@ -261,6 +261,10 @@ Thanks to these wonderful humans (and AIs) who help make this project better:
         <a href="https://github.com/Copilot"><img src="https://avatars.githubusercontent.com/Copilot" width="80px;" alt="GitHub Copilot"/><br /><sub><b>GitHub Copilot</b></sub></a><br />
         💻 📖 🎨
       </td>
+      <td align="center" valign="top" width="160px">
+        <a href="https://githubnext.com/projects/copilot-cli"><img src="https://github.githubassets.com/assets/copilot-logo-chat-e76d06930e55.svg" width="80px;" alt="GitHub Copilot CLI"/><br /><sub><b>Copilot CLI</b></sub></a><br />
+        💻 📖 🎨 🤔 📆
+      </td>
     </tr>
   </tbody>
 </table>
