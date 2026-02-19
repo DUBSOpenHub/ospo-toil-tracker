@@ -1,4 +1,4 @@
-# 🤖 AI First - Toil Tracker
+# 🤖 AI Toil Tracker
 
 **Stop doing repetitive work. Start automating it.**
 
