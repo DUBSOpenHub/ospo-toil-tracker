@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-02-19T06:19:44Z",
+  "repository": "DUBSOpenHub/ai-first-toil-tracker",
+  "summary": {
+    "totalToilItems": 0,
+    "openToilItems": 0,
+    "automatedItems": 0,
+    "totalWins": 0,
+    "totalMonthlyMinutes": 0,
+    "totalMonthlySaved": "~0 minutes/month"
+  },
+  "byCategory": [],
+  "byTeam": [],
+  "topItems": [],
+  "toilItems": [],
+  "wins": []
+}
