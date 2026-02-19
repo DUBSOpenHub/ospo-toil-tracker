@@ -245,6 +245,35 @@ For teams with strict data classification policies, review your organization's A
 
 ---
 
+## ✨ Contributors
+
+Thanks to these wonderful humans (and AIs) who help make this project better:
+
+<!-- ALL-CONTRIBUTORS-LIST:START -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="160px">
+        <a href="https://github.com/greggcochran"><img src="https://avatars.githubusercontent.com/greggcochran" width="80px;" alt="Gregg Cochran"/><br /><sub><b>Gregg Cochran</b></sub></a><br />
+        💻 📖 🤔 📆
+      </td>
+      <td align="center" valign="top" width="160px">
+        <a href="https://github.com/DUBSOpenHub"><img src="https://avatars.githubusercontent.com/DUBSOpenHub" width="80px;" alt="DUBSOpenHub"/><br /><sub><b>DUBSOpenHub</b></sub></a><br />
+        🚇 🧑‍🔧
+      </td>
+      <td align="center" valign="top" width="160px">
+        <a href="https://github.com/Copilot"><img src="https://avatars.githubusercontent.com/Copilot" width="80px;" alt="GitHub Copilot"/><br /><sub><b>GitHub Copilot</b></sub></a><br />
+        💻 📖 🎨
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+> 💻 code · 📖 docs · 🤔 ideas · 📆 project mgmt · 🚇 infra · 🧑‍🔧 maintenance · 🎨 design
+
+---
+
 ## 🐙 Built with Love
 
 Created with 💜 by DUBSOpenHub to help more people discover the joy of GitHub Copilot CLI.

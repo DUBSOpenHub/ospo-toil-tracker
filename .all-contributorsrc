@@ -1,0 +1,35 @@
+{
+  "projectName": "ai-toil-tracker",
+  "projectOwner": "DUBSOpenHub",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": ["README.md"],
+  "imageSize": 80,
+  "commit": false,
+  "commitConvention": "none",
+  "contributorsPerLine": 6,
+  "badgeTemplate": "![All Contributors](https://img.shields.io/badge/all_contributors-<count>-orange.svg?style=flat-square)",
+  "contributors": [
+    {
+      "login": "greggcochran",
+      "name": "Gregg Cochran",
+      "avatar_url": "https://avatars.githubusercontent.com/greggcochran",
+      "profile": "https://github.com/greggcochran",
+      "contributions": ["code", "doc", "ideas", "projectManagement"]
+    },
+    {
+      "login": "DUBSOpenHub",
+      "name": "DUBSOpenHub",
+      "avatar_url": "https://avatars.githubusercontent.com/DUBSOpenHub",
+      "profile": "https://github.com/DUBSOpenHub",
+      "contributions": ["infra", "maintenance"]
+    },
+    {
+      "login": "Copilot",
+      "name": "GitHub Copilot",
+      "avatar_url": "https://avatars.githubusercontent.com/Copilot",
+      "profile": "https://github.com/Copilot",
+      "contributions": ["code", "doc", "design"]
+    }
+  ]
+}
