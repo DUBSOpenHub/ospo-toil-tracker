@@ -254,10 +254,6 @@ Thanks to these wonderful humans (and AIs) who help make this project better:
   <tbody>
     <tr>
       <td align="center" valign="top" width="160px">
-        <a href="https://github.com/greggcochran"><img src="https://avatars.githubusercontent.com/greggcochran" width="80px;" alt="Gregg Cochran"/><br /><sub><b>Gregg Cochran</b></sub></a><br />
-        💻 📖 🤔 📆
-      </td>
-      <td align="center" valign="top" width="160px">
         <a href="https://github.com/DUBSOpenHub"><img src="https://avatars.githubusercontent.com/DUBSOpenHub" width="80px;" alt="DUBSOpenHub"/><br /><sub><b>DUBSOpenHub</b></sub></a><br />
         🚇 🧑‍🔧
       </td>

@@ -11,13 +11,6 @@
   "badgeTemplate": "![All Contributors](https://img.shields.io/badge/all_contributors-<count>-orange.svg?style=flat-square)",
   "contributors": [
     {
-      "login": "greggcochran",
-      "name": "Gregg Cochran",
-      "avatar_url": "https://avatars.githubusercontent.com/greggcochran",
-      "profile": "https://github.com/greggcochran",
-      "contributions": ["code", "doc", "ideas", "projectManagement"]
-    },
-    {
       "login": "DUBSOpenHub",
       "name": "DUBSOpenHub",
       "avatar_url": "https://avatars.githubusercontent.com/DUBSOpenHub",
