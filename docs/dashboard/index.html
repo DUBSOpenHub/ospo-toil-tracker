@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.github.com; img-src 'self' data:;">
+<title>Toil Tracker — Reduce Toil, Gain Leverage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-surface: #f5f7fb;
+  --bg-card: rgba(255,255,255,0.92);
+  --bg-glass: rgba(13,17,23,0.75);
+  --border-card: rgba(15,23,42,0.08);
+  --accent: #8250df;
+  --accent-strong: #5e3bc4;
+  --accent-soft: #c084fc;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #f87171;
+  --text-soft: #5a6473;
+  --text-primary: #1f2328;
+}
+.dark, :root:not(.light) {
+  --bg-surface: #0b0f17;
+  --bg-card: rgba(22,27,34,0.92);
+  --bg-glass: rgba(13,17,23,0.85);
+  --border-card: rgba(255,255,255,0.08);
+  --text-soft: #8b949e;
+  --text-primary: #e6edf3;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: radial-gradient(1400px 750px at 20% -10%, rgba(130,80,223,0.15), transparent 65%), radial-gradient(1200px 600px at 120% 0%, rgba(9,105,218,0.12), transparent 60%), var(--bg-surface); color: #1f2328; line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; min-height: 100vh; position: relative; }
+body::before { content: ""; position: fixed; inset: 0; background-image: radial-gradient(circle at 25% 25%, rgba(130,80,223,0.08), transparent 45%), radial-gradient(circle at 75% 0%, rgba(9,105,218,0.08), transparent 50%), linear-gradient(120deg, rgba(255,255,255,0.15) 0.5px, transparent 0.5px); background-size: 600px 600px, 600px 600px, 60px 60px; opacity: 0.45; pointer-events: none; z-index: -1; filter: blur(0.3px); }
+button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid #0969da; outline-offset: 2px; border-radius: 4px; }
+
+/* ── Header ── */
+.header { position: sticky; top: 0; z-index: 1000; background: linear-gradient(135deg, rgba(13,20,40,0.95), rgba(13,20,30,0.88)); color: #fff; padding: 1.75rem 2.25rem; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); box-shadow: 0 25px 65px rgba(3,7,18,0.45); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); overflow: hidden; isolation: isolate; border-radius: 0 0 18px 18px; }
+.header::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(720px 320px at 12% 5%, rgba(88,166,255,0.35), transparent 60%), radial-gradient(640px 260px at 88% -15%, rgba(163,113,247,0.28), transparent 70%); opacity: 0.85; }
+.header > * { position: relative; }
+.hero-left { display: flex; flex-direction: column; gap: 0.55rem; max-width: 640px; }
+.hero-eyebrow { font-size: 0.8rem; letter-spacing: 0.05em; text-transform: none; color: rgba(255,255,255,0.65); font-weight: 600; }
+.header h1 { font-size: clamp(1.6rem, 2.3vw, 2.2rem); font-weight: 750; letter-spacing: -0.02em; display: flex; align-items: center; gap: 0.75rem; color: #fff; }
+.hero-subtitle { font-size: 0.95rem; color: rgba(255,255,255,0.78); max-width: 520px; line-height: 1.6; }
+.hero-pulse { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.35rem; }
+.pulse-pill { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; padding: 0.35rem 0.75rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.08); text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.8); animation: pulseGlow 6s ease-in-out infinite; }
+.pulse-pill.success { border-color: rgba(34,197,94,0.45); background: rgba(34,197,94,0.15); color: #bbf7d0; }
+.pulse-pill.warning { border-color: rgba(245,158,11,0.45); background: rgba(245,158,11,0.15); color: #fcd34d; }
+.pulse-pill.neutral { border-color: rgba(255,255,255,0.25); }
+.header .meta { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.78); display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: flex-end; text-align: right; }
+.header .meta a { color: rgba(255,255,255,0.90); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.22); }
+.header .meta a:hover { border-bottom-color: rgba(255,255,255,0.55); }
+
+/* ── Container ── */
+.container { max-width: 1440px; margin: 0 auto; padding: 1.5rem; }
+
+/* ── Summary Cards ── */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; }
+.card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: 18px; padding: 1.75rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 20px 45px rgba(15,23,42,0.08); text-align: left; position: relative; overflow: hidden; }
+.card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 1px solid rgba(255,255,255,0.5); opacity: 0; pointer-events: none; }
+.card:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 35px 65px rgba(15,23,42,0.15); }
+.card:hover::after { opacity: 0.35; }
+.card .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-soft); margin-bottom: 0.35rem; font-weight: 600; }
+.card .value { font-size: 2.65rem; font-weight: 700; color: #0f172a; letter-spacing: -0.03em; line-height: 1.1; font-variant-numeric: tabular-nums; margin-bottom: 0.4rem; display: flex; align-items: baseline; gap: 0.3rem; }
+.card .value-number { display: inline-block; min-width: 0; }
+.card .value sup { font-size: 1.1rem; margin-left: 0.15rem; color: var(--text-soft); font-weight: 600; }
+.card .delta { font-size: 0.82rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.6rem; border-radius: 999px; }
+.delta.positive { background: rgba(34,197,94,0.1); color: #15803d; }
+.delta.negative { background: rgba(248,113,113,0.15); color: #b91c1c; }
+.card .card-subtext { font-size: 0.9rem; color: #4b5563; margin-bottom: 0.85rem; }
+.micro-progress { width: 100%; height: 6px; border-radius: 999px; background: rgba(15,23,42,0.08); overflow: hidden; position: relative; }
+.micro-progress span { position: absolute; inset: 0; border-radius: 999px; background: linear-gradient(90deg, var(--accent), #57a6ff); transform-origin: left; transition: transform 0.4s ease-out; }
+.micro-progress[data-color="warning"] span { background: linear-gradient(90deg, #f97316, #facc15); }
+.micro-progress[data-color="danger"] span { background: linear-gradient(90deg, #f87171, #f43f5e); }
+.card.emerald { background: linear-gradient(135deg, #f0fdf4, #e0f2fe); }
+.dark .card { background: #161b22; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.dark .card .value { color: #f8fafc; }
+.dark .card .card-subtext { color: #cbd5f5; }
+
+/* ── Insight Panels ── */
+.insights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+.insight-card { background: var(--bg-card); border: 1px solid rgba(15,23,42,0.08); border-radius: 18px; padding: 1.5rem; box-shadow: 0 18px 45px rgba(15,23,42,0.09); position: relative; overflow: hidden; transition: transform .3s ease, box-shadow .3s ease; }
+.insight-card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(circle at top right, rgba(130,80,223,0.18), transparent 60%); opacity: 0; transition: opacity .3s ease; }
+.insight-card:hover { transform: translateY(-5px); box-shadow: 0 25px 55px rgba(15,23,42,0.18); }
+.insight-card:hover::after { opacity: 1; }
+.insight-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.insight-header .eyebrow { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-soft); font-weight: 600; }
+.mini-pill { font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid rgba(15,23,42,0.15); text-transform: uppercase; letter-spacing: 0.1em; }
+.mini-pill.live { border-color: rgba(34,197,94,0.4); color: #15803d; background: rgba(34,197,94,0.12); animation: pulseGlow 3s ease-in-out infinite; }
+.mini-link { font-size: 0.8rem; border: none; background: none; color: #2563eb; font-weight: 600; cursor: pointer; padding: 0; }
+.mini-link:hover { text-decoration: underline; }
+.insight-body { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; }
+.radial-progress { --size: 120px; --progress: 0deg; width: var(--size); height: var(--size); border-radius: 50%; background: conic-gradient(var(--accent) var(--progress), rgba(15,23,42,0.08) 0); display: grid; place-items: center; position: relative; }
+.radial-progress::after { content: ""; position: absolute; inset: 12px; background: var(--bg-card); border-radius: 50%; box-shadow: inset 0 0 15px rgba(15,23,42,0.12); }
+.radial-progress strong { position: relative; font-size: 1.8rem; font-weight: 700; color: #0f172a; }
+.radial-progress span { position: relative; font-size: 0.75rem; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.15em; }
+.stat-list { flex: 1; display: flex; flex-direction: column; gap: 0.65rem; }
+.stat-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; color: #475569; }
+.stat-row strong { font-size: 1.25rem; color: #0f172a; font-variant-numeric: tabular-nums; }
+.risk-list { display: flex; flex-direction: column; gap: 0.85rem; }
+.risk-row { display: flex; justify-content: space-between; gap: 1rem; }
+.risk-row p { font-weight: 600; color: #0f172a; }
+.risk-row small { display: block; color: var(--text-soft); margin-top: 0.2rem; }
+.risk-value { font-weight: 700; color: #b91c1c; }
+.team-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+.team-pill { padding: 0.5rem 0.9rem; border-radius: 12px; border: 1px solid rgba(15,23,42,0.08); background: rgba(15,23,42,0.03); font-size: 0.85rem; display: inline-flex; flex-direction: column; gap: 0.15rem; min-width: 140px; }
+.team-pill strong { font-size: 1.1rem; color: #0f172a; }
+.insight-note { font-size: 0.82rem; color: var(--text-soft); }
+.dark .insight-card { background: #111827; border-color: rgba(255,255,255,0.06); box-shadow: 0 18px 45px rgba(0,0,0,0.5); }
+.dark .insight-card::after { background: radial-gradient(circle at top right, rgba(130,80,223,0.4), transparent 65%); }
+.dark .radial-progress::after { background: #0b1220; box-shadow: inset 0 0 15px rgba(0,0,0,0.45); }
+.dark .radial-progress strong { color: #f8fafc; }
+.dark .stat-row strong, .dark .risk-row p, .dark .team-pill strong { color: #f8fafc; }
+.dark .team-pill { border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); color: #cbd5f5; }
+
+/* ── Section ── */
+.section { background: #fff; border: 1px solid rgba(0,0,0,0.06); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+.section h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; letter-spacing: -0.01em; color: #111; display: flex; align-items: center; gap: 0.75rem; }
+.dark .section { background: #161b22; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.dark .section h2 { color: #fff; }
+
+/* ── Filters ── */
+.filters { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; align-items: center; }
+.filters label { font-size: 0.75rem; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.05em; }
+.filters select { padding: 0.5rem 2rem 0.5rem 0.75rem; border: 1px solid #e1e4e8; border-radius: 6px; font-size: 0.9rem; background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 0.5rem center/1em; appearance: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: border-color .15s, box-shadow .15s; }
+.filters select:focus { outline: none; border-color: #0969da; box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15); }
+
+/* ── Tables ── */
+table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9rem; }
+th, td { padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid #eaeaea; }
+th { background: #fafafa; font-weight: 600; color: #444; position: sticky; top: 0; cursor: pointer; user-select: none; white-space: nowrap; border-bottom: 1px solid #ddd; font-size: 0.8rem; letter-spacing: 0.02em; text-transform: uppercase; }
+th:first-child { border-top-left-radius: 8px; }
+th:last-child { border-top-right-radius: 8px; }
+th:hover { background: #f0f0f0; color: #000; }
+tr:last-child td { border-bottom: none; }
+tbody tr:nth-child(even):not(.total-row) { background: rgba(248,250,252,0.85); }
+tr:hover td { background: rgba(241,245,255,0.85); }
+.table-wrap { border: 1px solid rgba(15,23,42,0.08); border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 30px 60px rgba(15,23,42,0.08); }
+.dark .table-wrap { background: #0f172a; border-color: #30363d; box-shadow: 0 30px 60px rgba(0,0,0,0.65); }
+.dark th { background: #161b22; color: #aaa; border-bottom-color: #30363d; }
+.dark td { border-bottom-color: #30363d; color: #d0d7de; }
+.dark tbody tr:nth-child(even):not(.total-row) { background: rgba(255,255,255,0.02); }
+.dark tr:hover td { background: rgba(88,166,255,0.08); }
+
+/* ── Priority Rows ── */
+tr.priority-critical td:first-child { border-left: 4px solid #cf222e; }
+tr.priority-high td:first-child { border-left: 4px solid #bf8700; }
+tr.priority-medium td:first-child { border-left: 4px solid #1a7f37; }
+tr.priority-low td:first-child { border-left: 4px solid #8b949e; }
+/* Reset old border-left on tr */
+tr.priority-critical, tr.priority-high, tr.priority-medium, tr.priority-low { border-left: none; }
+
+/* ── Status Badges ── */
+.badge { display: inline-flex; align-items: center; font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 999px; text-transform: capitalize; letter-spacing: 0.02em; }
+.badge-toil { background: rgba(9, 105, 218, 0.1); color: #0969da; border: 1px solid rgba(9, 105, 218, 0.2); }
+.badge-triage { background: rgba(191, 135, 0, 0.1); color: #bf8700; border: 1px solid rgba(191, 135, 0, 0.2); }
+.badge-in-progress { background: rgba(130, 80, 223, 0.1); color: #8250df; border: 1px solid rgba(130, 80, 223, 0.2); }
+.badge-automated { background: rgba(26, 127, 55, 0.1); color: #1a7f37; border: 1px solid rgba(26, 127, 55, 0.2); }
+
+/* ── Inline Edit ── */
+td.editable { cursor: pointer; position: relative; }
+td.editable:hover { background: #ddf4ff; border-radius: 4px; }
+td.editable input, td.editable select { font-size: 0.82rem; padding: 0.2rem 0.35rem; border: 1px solid #0969da; border-radius: 4px; width: 100%; background: #fff; }
+.edited-marker { color: #8250df; font-weight: 700; margin-left: 2px; font-size: 0.65rem; }
+
+/* ── Team Manager Panel ── */
+.team-manager { margin-bottom: 1.25rem; padding: 1rem; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 8px; }
+.team-manager summary { font-weight: 600; font-size: 0.9rem; cursor: pointer; user-select: none; color: #24292f; }
+.team-manager summary:hover { color: #0969da; }
+.team-manager-list { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.team-rename-row { display: flex; align-items: center; gap: 0.5rem; }
+.team-rename-row .team-current { font-size: 0.85rem; font-weight: 600; min-width: 140px; }
+.team-rename-row span.arrow { color: #8b949e; font-size: 0.8rem; }
+.team-rename-row input { font-size: 0.85rem; padding: 0.3rem 0.5rem; border: 1px solid #d0d7de; border-radius: 6px; width: 180px; }
+.team-rename-row .btn-rename { background: #0969da; color: #fff; border-color: #0969da; font-size: 0.75rem; padding: 0.25rem 0.5rem; }
+.team-rename-row .btn-rename:hover { background: #0860ca; }
+.team-rename-row .btn-rename:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Buttons ── */
+.btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border: 1px solid rgba(0,0,0,0.1); border-radius: 6px; background: #fff; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all .2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 1px 2px rgba(0,0,0,0.05); color: #24292f; }
+.btn:hover { background: #f3f4f6; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.08); }
+.btn:active { transform: translateY(0); }
+.btn-launch { background: linear-gradient(180deg, #8250df 0%, #6e40c9 100%); color: #fff; border: 1px solid rgba(0,0,0,0.1); text-shadow: 0 1px 1px rgba(0,0,0,0.1); padding: 0.5rem 1rem; font-size: 0.85rem; }
+.btn-launch:hover { background: linear-gradient(180deg, #8c5ce6 0%, #784bd1 100%); box-shadow: 0 4px 12px rgba(130, 80, 223, 0.3); transform: translateY(-1px); }
+.btn-save { background: linear-gradient(180deg, #0969da 0%, #0550ae 100%); color: #fff; border: 1px solid rgba(0,0,0,0.1); }
+.btn-save:hover { background: linear-gradient(180deg, #1c76e2 0%, #065cbd 100%); box-shadow: 0 4px 12px rgba(9, 105, 218, 0.3); }
+
+/* ── Toil Name Cell ── */
+.toil-name { font-weight: 600; font-size: 0.95rem; color: #1f2328; line-height: 1.4; letter-spacing: -0.01em; }
+.toil-desc { font-size: 0.8rem; color: #656d76; margin-top: 0.25rem; line-height: 1.5; font-weight: 400; }
+.toil-cell { min-width: 320px; padding-top: 1.25rem; padding-bottom: 1.25rem; }
+.toil-action-cell { white-space: nowrap; }
+
+/* ── Copilot Tool Toggle ── */
+
+
+
+
+/* ── Toast ── */
+.toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: #24292f; color: #fff; padding: 0.75rem 1.25rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; z-index: 9999; opacity: 0; transform: translateY(10px); transition: all .3s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── Micro Animations ── */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(130,80,223,0.35); }
+  60% { box-shadow: 0 0 0 12px rgba(130,80,223,0); }
+  100% { box-shadow: 0 0 0 0 rgba(130,80,223,0); }
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .container { padding: 1rem; }
+  .cards { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .header { padding: 1.5rem; }
+  .insight-body { flex-direction: column; }
+}
+
+/* ── Dark Mode Toggle ── */
+.theme-toggle { background: none; border: 1px solid #484f58; border-radius: 6px; color: #fff; padding: 0.3rem 0.6rem; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 0.35rem; transition: all .15s; }
+.theme-toggle:hover { background: #484f58; }
+
+/* ── Dark Mode (GitHub Primer Dark) ── */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+    --bg-surface: #0b0f17;
+    --bg-card: rgba(22,27,34,0.92);
+    --border-card: rgba(255,255,255,0.08);
+    --text-soft: #8b949e;
+    --text-primary: #e6edf3;
+  }
+}
+.dark { color-scheme: dark; }
+.dark body, :root:not(.light) body { background: radial-gradient(1200px 650px at 18% -10%, rgba(56,139,253,0.12), transparent 62%), radial-gradient(950px 520px at 88% -5%, rgba(163,113,247,0.10), transparent 64%), #0b0f17; color: #e6edf3; }
+.dark body::before, :root:not(.light) body::before { opacity: 0.3; filter: blur(0.5px); }
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) body { background: radial-gradient(1200px 650px at 18% -10%, rgba(56,139,253,0.12), transparent 62%), radial-gradient(950px 520px at 88% -5%, rgba(163,113,247,0.10), transparent 64%), #0b0f17; color: #e6edf3; }
+  :root:not(.light) .header { background: #161b22; }
+  :root:not(.light) .header .meta { color: #8b949e; }
+  :root:not(.light) .card { background: #161b22; border-color: #30363d; }
+  :root:not(.light) .card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+  :root:not(.light) .card .label { color: #8b949e; }
+  :root:not(.light) .card .value { color: #58a6ff; }
+  :root:not(.light) .card .value.green { color: #3fb950; }
+  :root:not(.light) .card .value.purple { color: #bc8cff; }
+  :root:not(.light) .card .value.orange { color: #d29922; }
+  :root:not(.light) .section { background: #161b22; border-color: #30363d; }
+  :root:not(.light) .filters label { color: #8b949e; }
+  :root:not(.light) .filters select { background: #0d1117; border-color: #30363d; color: #e6edf3; }
+  :root:not(.light) th { background: #161b22; color: #e6edf3; border-color: #30363d; }
+  :root:not(.light) th:hover { background: #1c2128; }
+  :root:not(.light) td { border-color: #21262d; }
+  :root:not(.light) tr:hover { background: #161b22; }
+  :root:not(.light) tr.total-row { background: #1c2128; }
+  :root:not(.light) td.editable:hover { background: #1c3049; }
+  :root:not(.light) td.editable input, :root:not(.light) td.editable select { background: #0d1117; border-color: #58a6ff; color: #e6edf3; }
+  :root:not(.light) .btn { background: #21262d; border-color: #30363d; color: #e6edf3; }
+  :root:not(.light) .btn:hover { background: #30363d; }
+  :root:not(.light) .btn-launch { background: #8957e5; color: #fff; border-color: #8957e5; }
+  :root:not(.light) .btn-launch:hover { background: #a371f7; }
+  :root:not(.light) .toil-name { color: #e6edf3; }
+  :root:not(.light) .toil-desc { color: #8b949e; }
+  :root:not(.light) .btn-save { background: #1f6feb; color: #fff; border-color: #1f6feb; }
+  :root:not(.light) .btn-save:hover { background: #388bfd; }
+  :root:not(.light) .badge-toil { background: #1c3049; color: #58a6ff; }
+  :root:not(.light) .badge-triage { background: #3d2e00; color: #d29922; }
+  :root:not(.light) .badge-in-progress { background: #2d1f4e; color: #bc8cff; }
+  :root:not(.light) .badge-automated { background: #0f2d1c; color: #3fb950; }
+  :root:not(.light) .toast { background: #30363d; color: #e6edf3; }
+  :root:not(.light) .edited-marker { color: #bc8cff; }
+  :root:not(.light) .team-manager { background: #0d1117; border-color: #30363d; }
+  :root:not(.light) .team-manager summary { color: #e6edf3; }
+  :root:not(.light) .team-rename-row input { background: #0d1117; border-color: #30363d; color: #e6edf3; }
+  :root:not(.light) .team-rename-row .btn-rename { background: #1f6feb; border-color: #1f6feb; }
+  :root:not(.light) a { color: #58a6ff; }
+  :root:not(.light) .details-toggle { background: #161b22; border-color: #30363d; color: #e6edf3; }
+  :root:not(.light) .details-toggle:hover { background: #1c2128; }
+}
+
+/* Explicit .dark class overrides (for manual toggle) */
+.dark body { background: radial-gradient(1200px 650px at 18% -10%, rgba(56,139,253,0.12), transparent 62%), radial-gradient(950px 520px at 88% -5%, rgba(163,113,247,0.10), transparent 64%), #0b0f17; color: #e6edf3; }
+.dark .header { background: linear-gradient(135deg, rgba(56,139,253,0.18), rgba(188,140,255,0.14)), #070b12; box-shadow: 0 16px 40px rgba(0,0,0,0.45); }
+.dark .header .meta { color: rgba(255,255,255,0.65); }
+.dark .card { background: #161b22; border-color: #30363d; }
+.dark .card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.3); }
+.dark .card .label { color: #8b949e; }
+.dark .card .value { color: #58a6ff; }
+.dark .card .value.green { color: #3fb950; }
+.dark .card .value.purple { color: #bc8cff; }
+.dark .card .value.orange { color: #d29922; }
+.dark .section { background: #161b22; border-color: #30363d; }
+.dark .filters label { color: #8b949e; }
+.dark .filters select { background: #0d1117; border-color: #30363d; color: #e6edf3; }
+.dark th { background: #161b22; color: #e6edf3; border-color: #30363d; }
+.dark th:hover { background: #1c2128; }
+.dark td { border-color: #21262d; }
+.dark tr:hover { background: #161b22; }
+.dark tr.total-row { background: #1c2128; }
+.dark td.editable:hover { background: #1c3049; }
+.dark td.editable input, .dark td.editable select { background: #0d1117; border-color: #58a6ff; color: #e6edf3; }
+.dark .btn { background: #21262d; border-color: #30363d; color: #e6edf3; }
+.dark .btn:hover { background: #30363d; }
+.dark .btn-launch { background: #8957e5; color: #fff; border-color: #8957e5; }
+.dark .btn-launch:hover { background: #a371f7; }
+.dark .btn-save { background: #1f6feb; color: #fff; border-color: #1f6feb; }
+.dark .btn-save:hover { background: #388bfd; }
+.dark .badge-toil { background: #1c3049; color: #58a6ff; }
+.dark .badge-triage { background: #3d2e00; color: #d29922; }
+.dark .badge-in-progress { background: #2d1f4e; color: #bc8cff; }
+.dark .badge-automated { background: #0f2d1c; color: #3fb950; }
+.dark .toast { background: #30363d; color: #e6edf3; }
+.dark .edited-marker { color: #bc8cff; }
+.dark .team-manager { background: #0d1117; border-color: #30363d; }
+.dark .team-manager summary { color: #e6edf3; }
+.dark .team-rename-row input { background: #0d1117; border-color: #30363d; color: #e6edf3; }
+.dark .team-rename-row .btn-rename { background: #1f6feb; border-color: #1f6feb; }
+.dark a { color: #58a6ff; }
+.dark .toil-name { color: #e6edf3; }
+.dark .toil-desc { color: #8b949e; }
+.dark .theme-toggle { border-color: #30363d; }
+.dark .details-toggle { background: #161b22; border-color: #30363d; color: #e6edf3; }
+.dark .details-toggle:hover { background: #1c2128; }
+
+
+/* ── Details Toggle ── */
+.section-details { margin-bottom: 1.5rem; }
+.details-toggle { font-size: 1rem; font-weight: 600; cursor: pointer; padding: 0.75rem 1.25rem; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 8px; display: block; user-select: none; }
+.details-toggle:hover { background: #eaeef2; }
+.section-details[open] .details-toggle { border-radius: 8px 8px 0 0; margin-bottom: 0; border-bottom: none; }
+
+/* ── Column Toggle ── */
+.col-hidden { display: none; }
+.show-cols-toggle { font-size: 0.78rem; color: #0969da; cursor: pointer; background: none; border: none; font-weight: 600; margin-left: 0.5rem; }
+.show-cols-toggle:hover { text-decoration: underline; }
+
+/* ── Print ── */
+@media print {
+  .header { background: #fff !important; color: #000 !important; border-bottom: 2px solid #000; }
+  .header .meta a { color: #000 !important; }
+  .btn-launch, .btn-save, .filters, .theme-toggle { display: none !important; }
+  .card { border: 1px solid #ccc !important; break-inside: avoid; background: #fff !important; color: #000 !important; }
+  .card .value { color: #000 !important; }
+  .section { break-inside: avoid; background: #fff !important; border-color: #ccc !important; }
+  body { background: #fff !important; color: #000 !important; }
+  th { background: #f6f8fa !important; color: #000 !important; }
+  td { color: #000 !important; border-color: #d8dee4 !important; }
+  .toast { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Powered by GitHub Copilot CLI</p>
+    <h1>⚡ AI-First Toil Tracker</h1>
+    <p class="hero-subtitle">Reduce Toil, Gain Leverage</p>
+    <div class="hero-pulse" id="heroPulse">
+      <span class="pulse-pill neutral">⚡ Scanning for toil…</span>
+    </div>
+  </div>
+  <div class="meta">
+    <span id="headerRepo"></span>
+    <span>Generated: <span id="headerDate">—</span></span>
+    <a href="#" id="headerRepoLink" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">🌙 Dark</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Summary Cards -->
+  <div class="cards" id="summaryCards"></div>
+
+  <!-- Insights Grid -->
+  <div class="insights-grid" id="insightsGrid">
+    <article class="insight-card" id="pipelineCard"></article>
+    <article class="insight-card" id="riskCard"></article>
+    <article class="insight-card" id="teamFocusCard"></article>
+  </div>
+
+  <!-- Main Toil Ideas Table (MOVED UP) -->
+  <div class="section">
+    <h2>🗂️ What Should We Automate?</h2>
+    <div class="filters">
+      <label>Team:</label>
+      <select id="filterTeam"><option value="">All</option></select>
+      <label>Category:</label>
+      <select id="filterCategory"><option value="">All</option></select>
+      <label>Status:</label>
+      <select id="filterStatus"><option value="">All</option></select>
+      <label>📊 Sort by:</label>
+      <select id="filterSort">
+        <option value="monthly_saved_minutes">⏱️ Potential Time Saved / Month</option>
+        <option value="toil_score">🎯 Impact Score</option>
+      </select>
+      <button class="show-cols-toggle" id="toggleCols" onclick="toggleColumns()">+ Show all details</button>
+    </div>
+    <div class="table-wrap">
+      <table id="toilTable">
+        <thead>
+          <tr>
+            <th data-col="number">#️⃣</th>
+            <th data-col="title">💡 Toil</th>
+            <th data-col="actions"></th>
+            <th data-col="submitter">🧑‍💻 Submitter</th>
+            <th data-col="team">🏢 Team</th>
+            <th data-col="category" class="col-hidden">🏷️ Category</th>
+            <th data-col="frequency">🔄 Frequency</th>
+            <th data-col="time_per_occurrence">⏱️ Time</th>
+            <th data-col="people_affected">👥 People</th>
+            <th data-col="toil_score">🎯 Impact Score</th>
+            <th data-col="status">📍 Status</th>
+            <th data-col="monthly_saved_minutes">⏱️ Time Saved / Month</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- Collapsible Details -->
+  <details class="section-details">
+    <summary class="details-toggle">📊 Team Breakdown, Time Impact &amp; Leaderboard</summary>
+
+    <!-- Team & Individual Breakdown -->
+    <div class="section" id="breakdownSection">
+      <h2>🏆 Team &amp; Individual Leaderboard</h2>
+      <details class="team-manager">
+        <summary>✨ Customize Team Names</summary>
+        <div class="team-manager-list" id="teamManagerList">
+          <!-- Populated by JS -->
+        </div>
+      </details>
+      <div class="filters">
+        <label>Team:</label>
+        <select id="breakdownTeamFilter"><option value="">All Teams</option></select>
+      </div>
+      <div id="teamTables"></div>
+      <h3 style="margin:1.25rem 0 0.5rem;font-size:0.95rem;">🧑‍💻 Individual Scoreboard</h3>
+      <div class="table-wrap">
+        <table id="personTable">
+          <thead><tr><th>🧑‍💻 Name</th><th>💡 Ideas Submitted</th><th>🤖 Automated</th><th>⏱️ Weekly Hours Spent</th><th>⏱️ Time Given Back / Month</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </details>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// THEME — Dark/Light mode with localStorage persistence
+// ═══════════════════════════════════════════════════
+function initTheme() {
+  const saved = localStorage.getItem('toilDashTheme');
+  if (saved === 'dark') { applyDark(); }
+  else if (saved === 'light') { applyLight(); }
+  // else: follow system preference via CSS prefers-color-scheme
+}
+function toggleTheme() {
+  const html = document.documentElement;
+  if (html.classList.contains('dark')) { applyLight(); localStorage.setItem('toilDashTheme', 'light'); }
+  else { applyDark(); localStorage.setItem('toilDashTheme', 'dark'); }
+}
+function applyDark() {
+  document.documentElement.classList.add('dark');
+  document.documentElement.classList.remove('light');
+  const btn = document.getElementById('themeToggle');
+  if (btn) { btn.innerHTML = '☀️ Light'; }
+}
+function applyLight() {
+  document.documentElement.classList.remove('dark');
+  document.documentElement.classList.add('light');
+  const btn = document.getElementById('themeToggle');
+  if (btn) { btn.innerHTML = '🌙 Dark'; }
+}
+initTheme();
+
+// ═══════════════════════════════════════════════════
+// CONFIG — Set your owner/repo here
+// ═══════════════════════════════════════════════════
+const CONFIG = {
+  owner: '',
+  repo: '',
+  get fullRepo() { return `${this.owner}/${this.repo}`; }
+};
+// Auto-detect from GitHub Pages URL (e.g. owner.github.io/repo/dashboard/)
+(function() {
+  const parts = window.location.pathname.split('/').filter(Boolean);
+  if (window.location.hostname.endsWith('.github.io') && parts.length >= 1) {
+    CONFIG.owner = window.location.hostname.split('.')[0];
+    CONFIG.repo = parts[0];
+  } else {
+    // Fallback — edit these if not on GitHub Pages
+    CONFIG.owner = 'DUBSOpenHub';
+    CONFIG.repo = 'ai-first-toil-tracker';
+  }
+})();
+
+// ═══════════════════════════════════════════════════
+// SCORE MULTIPLIERS (matches ai-triage.yml)
+// ═══════════════════════════════════════════════════
+const FREQ_SCORES = {
+  '🔴 Multiple times per day': { score: 8, monthly: 60 },
+  '🟠 Daily': { score: 5, monthly: 20 },
+  '🟡 Multiple times per week': { score: 3, monthly: 10 },
+  '🔵 Weekly': { score: 2, monthly: 4 },
+  '⚪ Monthly or less': { score: 1, monthly: 1 }
+};
+const TIME_SCORES = {
+  '> 1 hour': { score: 8, mins: 75 },
+  '30–60 minutes': { score: 5, mins: 45 },
+  '15–30 minutes': { score: 3, mins: 22 },
+  '5–15 minutes': { score: 2, mins: 10 },
+  '< 5 minutes': { score: 1, mins: 3 }
+};
+const PEOPLE_SCORES = {
+  'Multiple teams / org-wide': { score: 8 },
+  'Entire team': { score: 5 },
+  '4\u20136 people': { score: 3 },
+  '2\u20133 people': { score: 2 },
+  'Just me': { score: 1 }
+};
+const BONUS_MAP = {
+  '❌ Error-prone': 2,
+  '🔗 Blocking': 3,
+  '😤 Morale killer': 1,
+  '📈 Growing worse': 2,
+  '🆕 New team friction': 1
+};
+
+const PRIORITY_BANDS = [
+  { id: 'critical', min: 40, className: 'priority-critical', label: '🔴 Critical' },
+  { id: 'high', min: 20, className: 'priority-high', label: '🟠 High' },
+  { id: 'medium', min: 10, className: 'priority-medium', label: '🟡 Medium' },
+  { id: 'low', min: 0, className: 'priority-low', label: '⚪ Low' }
+];
+const CRITICAL_THRESHOLD = PRIORITY_BANDS[0].min;
+
+function getPriorityBand(score = 0) {
+  return PRIORITY_BANDS.find(band => score >= band.min) || PRIORITY_BANDS[PRIORITY_BANDS.length - 1];
+}
+
+function isCritical(score = 0) {
+  return score >= CRITICAL_THRESHOLD;
+}
+
+// ═══════════════════════════════════════════════════
+// SAMPLE DATA
+// ═══════════════════════════════════════════════════
+const SAMPLE_DATA = {
+  repo: CONFIG.fullRepo,
+  generated_at: new Date().toISOString(),
+  issues: [
+    {
+      number: 1,
+      title: "[TOIL] Staging Deploy — Manual deployment steps for staging environment",
+      url: `https://github.com/${CONFIG.fullRepo}/issues/1`,
+      state: "open",
+      labels: ["toil", "high-impact", "🔴 multiple-times-daily"],
+      submitter: "Jane Smith (@janesmith)",
+      team: "Platform",
+      category: "🔧 CI/CD & Builds",
+      frequency: "🔴 Multiple times per day",
+      time_per_occurrence: "30–60 minutes",
+      people_affected: "Entire team",
+      bonus_factors: ["❌ Error-prone", "🔗 Blocking"],
+      automation_idea: "Create a CI/CD pipeline with GitHub Actions to automate staging deployments",
+      toil_score: 200,
+      priority: "🔴 Critical",
+      monthly_saved_minutes: 15000,
+      weekly_time_spent: 300,
+      team_weekly_time_spent: 1500,
+      weekly_time_spent_display: "5 hrs/week",
+      team_weekly_time_spent_display: "25 hrs/week",
+      created_at: "2026-02-10T10:00:00Z",
+      ai_suggestion: "Use reusable GitHub Actions workflow with environment gates"
+    },
+    {
+      number: 2,
+      title: "[TOIL] Credential Rotation — Rotating database credentials manually every week",
+      url: `https://github.com/${CONFIG.fullRepo}/issues/2`,
+      state: "open",
+      labels: ["toil", "triage"],
+      submitter: "Bob Lee (@boblee)",
+      team: "Security",
+      category: "🔐 Security & Compliance",
+      frequency: "🔵 Weekly",
+      time_per_occurrence: "15–30 minutes",
+      people_affected: "2-3 people",
+      bonus_factors: ["❌ Error-prone"],
+      automation_idea: "Use AWS Secrets Manager automatic rotation",
+      toil_score: 14,
+      priority: "🟡 Medium",
+      monthly_saved_minutes: 176,
+      weekly_time_spent: 30,
+      team_weekly_time_spent: 60,
+      weekly_time_spent_display: "30 min/week",
+      team_weekly_time_spent_display: "1 hr/week",
+      created_at: "2026-02-11T14:30:00Z",
+      ai_suggestion: "Configure AWS Secrets Manager with Lambda rotation function"
+    },
+    {
+      number: 3,
+      title: "[TOIL] Test Results — Copy-pasting test results into Slack every morning",
+      url: `https://github.com/${CONFIG.fullRepo}/issues/3`,
+      state: "closed",
+      labels: ["toil", "automated"],
+      submitter: "Alice Chen (@alicechen)",
+      team: "Platform",
+      category: "📊 Reporting & Communication",
+      frequency: "🟠 Daily",
+      time_per_occurrence: "5–15 minutes",
+      people_affected: "Just you",
+      bonus_factors: ["😤 Morale killer"],
+      automation_idea: "Slack bot that posts CI results automatically",
+      toil_score: 11,
+      priority: "🟡 Medium",
+      monthly_saved_minutes: 200,
+      weekly_time_spent: 50,
+      team_weekly_time_spent: 50,
+      weekly_time_spent_display: "50 min/week",
+      team_weekly_time_spent_display: "50 min/week",
+      created_at: "2026-02-08T09:00:00Z",
+      ai_suggestion: "GitHub Actions workflow with Slack notification step"
+    },
+    {
+      number: 4,
+      title: "[TOIL] Dep Updates — Updating dependency versions across 12 microservices",
+      url: `https://github.com/${CONFIG.fullRepo}/issues/4`,
+      state: "open",
+      labels: ["toil", "in-progress", "high-impact"],
+      submitter: "Carlos Diaz (@carlosdiaz)",
+      team: "Platform",
+      category: "🔧 CI/CD & Builds",
+      frequency: "🟡 Multiple times per week",
+      time_per_occurrence: "> 1 hour",
+      people_affected: "4-6 people",
+      bonus_factors: ["❌ Error-prone", "📈 Growing worse"],
+      automation_idea: "Dependabot with auto-merge for patch versions",
+      toil_score: 76,
+      priority: "🔴 Critical",
+      monthly_saved_minutes: 6600,
+      weekly_time_spent: 120,
+      team_weekly_time_spent: 480,
+      weekly_time_spent_display: "2 hrs/week",
+      team_weekly_time_spent_display: "8 hrs/week",
+      created_at: "2026-02-12T11:00:00Z",
+      ai_suggestion: "Set up Dependabot with grouped updates and auto-merge workflow"
+    },
+    {
+      number: 5,
+      title: "[TOIL] Dev Onboarding — Manual environment setup for new engineers",
+      url: `https://github.com/${CONFIG.fullRepo}/issues/5`,
+      state: "open",
+      labels: ["toil", "triage"],
+      submitter: "Dana Kim (@danakim)",
+      team: "Developer Experience",
+      category: "🆕 Onboarding & Access",
+      frequency: "⚪ Monthly or less",
+      time_per_occurrence: "> 1 hour",
+      people_affected: "2-3 people",
+      bonus_factors: ["🆕 New team friction", "😤 Morale killer"],
+      automation_idea: "Dev container or Codespaces setup with scripted provisioning",
+      toil_score: 18,
+      priority: "🟡 Medium",
+      monthly_saved_minutes: 150,
+      weekly_time_spent: 90,
+      team_weekly_time_spent: 180,
+      weekly_time_spent_display: "1.5 hrs/week",
+      team_weekly_time_spent_display: "3 hrs/week",
+      created_at: "2026-02-14T16:00:00Z",
+      ai_suggestion: "Create devcontainer.json with all tools and extensions pre-configured"
+    },
+    {
+      number: 6,
+      title: "[TOIL] Ticket Triage — Routing incoming support tickets from Zendesk",
+      url: `https://github.com/${CONFIG.fullRepo}/issues/6`,
+      state: "open",
+      labels: ["toil", "high-impact"],
+      submitter: "Bob Lee (@boblee)",
+      team: "Security",
+      category: "📊 Reporting & Communication",
+      frequency: "🟠 Daily",
+      time_per_occurrence: "30–60 minutes",
+      people_affected: "Entire team",
+      bonus_factors: ["🔗 Blocking", "📈 Growing worse"],
+      automation_idea: "Use an AI classifier to auto-route tickets by category",
+      toil_score: 55,
+      priority: "🔴 Critical",
+      monthly_saved_minutes: 4500,
+      weekly_time_spent: 150,
+      team_weekly_time_spent: 750,
+      weekly_time_spent_display: "2.5 hrs/week",
+      team_weekly_time_spent_display: "12.5 hrs/week",
+      created_at: "2026-02-15T08:00:00Z",
+      ai_suggestion: "Train a classifier on historical ticket data to auto-label and route"
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let dashboardData = null;
+let sortCol = 'team_weekly_time_spent';
+let sortDir = -1; // -1 = desc
+const localEdits = JSON.parse(localStorage.getItem('toilEdits') || '{}');
+
+// ═══════════════════════════════════════════════════
+// DATA LOADING
+// ═══════════════════════════════════════════════════
+async function loadData() {
+  // Try local JSON first
+  try {
+    const res = await fetch('dashboard-data.json');
+    if (res.ok) {
+      dashboardData = await res.json();
+      applyLocalEdits();
+      render();
+      return;
+    }
+  } catch (_) { /* fall through */ }
+
+  // Fallback: GitHub API
+  try {
+    const apiUrl = `https://api.github.com/repos/${CONFIG.fullRepo}/issues?labels=toil&state=all&per_page=100`;
+    const res = await fetch(apiUrl);
+    if (res.ok) {
+      const apiIssues = await res.json();
+      dashboardData = convertApiIssues(apiIssues);
+      applyLocalEdits();
+      render();
+      return;
+    }
+  } catch (_) { /* fall through */ }
+
+  // Fallback: sample data
+  dashboardData = SAMPLE_DATA;
+  applyLocalEdits();
+  render();
+}
+
+function convertApiIssues(apiIssues) {
+  return {
+    repo: CONFIG.fullRepo,
+    generated_at: new Date().toISOString(),
+    issues: apiIssues.filter(i => !i.pull_request).map(issue => {
+      const body = issue.body || '';
+      const labels = issue.labels.map(l => l.name);
+      const freq = extractField(body, 'How often does it happen?') || '⚪ Monthly or less';
+      const time = extractField(body, 'How long does it take each time?') || '< 5 minutes';
+      const people = extractField(body, 'Who is affected?') || 'Just me';
+      const team = extractField(body, 'What team or group are you on?') || 'Unknown';
+      const category = extractField(body, 'What area does this toil fall under?') || 'Other';
+      const submitter = issue.user ? `${issue.user.login} (@${issue.user.login})` : 'Unknown';
+      const bonusRaw = extractField(body, 'Bonus factors (check all that apply)') || '';
+      const bonus = Object.keys(BONUS_MAP).filter(b => bonusRaw.includes(b));
+      const { score, monthlyMins } = calcScore(freq, time, people, bonus);
+      return {
+        number: issue.number,
+        title: issue.title,
+        url: issue.html_url,
+        state: issue.state,
+        labels,
+        submitter,
+        team,
+        category,
+        frequency: freq,
+        time_per_occurrence: time,
+        people_affected: people,
+        bonus_factors: bonus,
+        automation_idea: extractField(body, 'Automation idea (if any)') || '',
+        toil_score: score,
+        priority: getPriorityLabel(score),
+        monthly_saved_minutes: monthlyMins,
+        created_at: issue.created_at,
+        ai_suggestion: ''
+      };
+    })
+  };
+}
+
+function extractField(body, field) {
+  const escaped = field.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`###?\\s*${escaped}[\\s:]*\\n+([^\\n]+)`, 'i');
+  const m = body.match(regex);
+  return m ? m[1].trim() : null;
+}
+
+function calcScore(freq, time, people, bonus) {
+  const fObj = FREQ_SCORES[freq] || { score: 1, monthly: 1 };
+  const tObj = TIME_SCORES[time] || { score: 1, mins: 3 };
+  const pObj = PEOPLE_SCORES[people] || { score: 1 };
+  const base = fObj.score * tObj.score * pObj.score;
+  const bonusList = Array.isArray(bonus) ? bonus : [];
+  const bonusTotal = bonusList.reduce((s, b) => s + (BONUS_MAP[b] || 0), 0);
+  const score = base + bonusTotal;
+  const monthlyMins = fObj.monthly * tObj.mins * pObj.score;
+  return { score, monthlyMins };
+}
+
+function applyLocalEdits() {
+  if (!dashboardData) return;
+  dashboardData.issues.forEach(issue => {
+    const edits = localEdits[issue.number];
+    if (!edits) return;
+    if (edits.frequency) issue.frequency = edits.frequency;
+    if (edits.time_per_occurrence) issue.time_per_occurrence = edits.time_per_occurrence;
+    if (edits.people_affected) issue.people_affected = edits.people_affected;
+    // Recalculate score
+    const { score, monthlyMins } = calcScore(issue.frequency, issue.time_per_occurrence, issue.people_affected, issue.bonus_factors);
+    issue.toil_score = score;
+    issue.monthly_saved_minutes = monthlyMins;
+    issue.priority = getPriorityLabel(score);
+  });
+}
+
+function saveLocalEdits() {
+  localStorage.setItem('toilEdits', JSON.stringify(localEdits));
+}
+
+// ═══════════════════════════════════════════════════
+// STATUS HELPERS
+// ═══════════════════════════════════════════════════
+function getStatus(issue) {
+  const labels = issue.labels.map(l => l.toLowerCase());
+  if (labels.includes('automated') || issue.state === 'closed') return 'automated';
+  if (labels.includes('in-progress')) return 'in-progress';
+  if (labels.includes('triage')) return 'triage';
+  return 'toil';
+}
+
+function statusBadge(status) {
+  const badges = {
+    'automated': '✅ shipped',
+    'in-progress': '🔨 building',
+    'triage': '🔍 triaging',
+    'toil': '💡 ready to fix'
+  };
+  return `<span class="badge badge-${status}">${badges[status] || status}</span>`;
+}
+
+function priorityClass(score) {
+  return getPriorityBand(score).className;
+}
+
+function getPriorityLabel(score) {
+  return getPriorityBand(score).label;
+}
+
+function formatMinutes(mins) {
+  if (mins >= 60) return `${(mins / 60).toFixed(1)} hrs/mo`;
+  return `${Math.round(mins)} min/mo`;
+}
+
+function formatWeeklyTime(mins) {
+  if (!mins && mins !== 0) return '—';
+  if (mins >= 60) return `${(mins / 60).toFixed(1)} hrs/wk`;
+  return `${Math.round(mins)} min/wk`;
+}
+
+function formatCurrencyShort(value) {
+  if (!isFinite(value) || value <= 0) return '$0';
+  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `$${(value / 1_000).toFixed(0)}K`;
+  return `$${Math.round(value)}`;
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════
+function render() {
+  const data = dashboardData;
+  if (!data) return;
+
+  // Apply team renames
+  applyTeamRenames(data.issues);
+
+  // Header
+  document.getElementById('headerRepo').textContent = data.repo;
+  document.getElementById('headerDate').textContent = new Date(data.generated_at).toLocaleDateString();
+  document.getElementById('headerRepoLink').href = `https://github.com/${data.repo}`;
+
+  const issues = data.issues;
+
+  // Populate filter dropdowns
+  populateFilters(issues);
+
+  // Summary cards
+  renderSummaryCards(issues);
+
+  // Hero + insight telemetry
+  renderHeroPulse(issues);
+  renderInsightPanels(issues);
+
+  // Team manager + breakdown
+  renderTeamManager(issues);
+  renderBreakdown(issues);
+
+  // Main table
+  renderToilTable(issues);
+}
+
+function populateFilters(issues) {
+  const teams = [...new Set(issues.map(i => i.team).filter(Boolean))].sort();
+  const categories = [...new Set(issues.map(i => i.category).filter(Boolean))].sort();
+  const statuses = [...new Set(issues.map(i => getStatus(i)))].sort();
+
+  fillSelect('filterTeam', teams);
+  fillSelect('filterCategory', categories);
+  fillSelect('filterStatus', statuses);
+  fillSelect('breakdownTeamFilter', teams);
+}
+
+function fillSelect(id, options) {
+  const sel = document.getElementById(id);
+  const current = sel.value;
+  // Keep first "All" option
+  while (sel.options.length > 1) sel.remove(1);
+  options.forEach(o => {
+    const opt = document.createElement('option');
+    opt.value = o; opt.textContent = o;
+    sel.appendChild(opt);
+  });
+  sel.value = current;
+}
+
+// ── Summary Cards ──
+function renderSummaryCards(issues) {
+  const total = issues.length || 0;
+  const statusCounts = issues.reduce((acc, issue) => {
+    const status = getStatus(issue);
+    acc[status] = (acc[status] || 0) + 1;
+    return acc;
+  }, {});
+  const automated = statusCounts['automated'] || 0;
+  const inProgress = statusCounts['in-progress'] || 0;
+  const backlog = statusCounts['toil'] || 0;
+  const totalMinsSaved = issues.reduce((s, i) => s + (i.monthly_saved_minutes || 0), 0);
+  const hoursSaved = totalMinsSaved / 60;
+  const automationRate = total ? Math.round((automated / total) * 100) : 0;
+  const riskIssues = issues.filter(i => getStatus(i) !== 'automated' && isCritical(i.toil_score));
+  const riskMins = riskIssues.reduce((s, i) => s + (i.monthly_saved_minutes || 0), 0);
+  const riskHours = riskMins / 60;
+  const avgHoursPerIdea = total ? (hoursSaved / total) : 0;
+  const weeklyBurn = issues.reduce((s, i) => s + (i.team_weekly_time_spent || 0), 0) / 60;
+  const fteRecovered = hoursSaved / 160;
+  const targetRate = 55;
+  const rateDelta = automationRate - targetRate;
+  const deltaClass = rateDelta >= 0 ? 'positive' : 'negative';
+  const deltaLabel = `${rateDelta >= 0 ? '+' : ''}${rateDelta.toFixed(0)} pts vs target`;
+  const mitigationRate = hoursSaved + riskHours > 0 ? Math.round((hoursSaved / (hoursSaved + riskHours)) * 100) : 0;
+  const riskShare = total ? Math.round((riskIssues.length / total) * 100) : 0;
+  const backlogShare = total ? Math.round((backlog / total) * 100) : 0;
+
+  document.getElementById('summaryCards').innerHTML = `
+    <article class="card">
+      <div class="label">Automation Velocity</div>
+      <div class="value"><span class="value-number" data-animate="${automationRate}" data-format="percent">${automationRate}%</span></div>
+      <div class="delta ${deltaClass}">${deltaLabel}</div>
+      <p class="card-subtext">${automated} of ${total} toil signals retired</p>
+      <div class="micro-progress"><span style="width:${Math.min(automationRate, 100)}%"></span></div>
+    </article>
+    <article class="card emerald">
+      <div class="label">Hours Saved / Month</div>
+      <div class="value"><span class="value-number" data-animate="${hoursSaved}" data-format="hours">${hoursSaved.toFixed(1)}</span><sup>hrs</sup></div>
+      <p class="card-subtext">≈ ${fteRecovered.toFixed(1)} FTEs given back</p>
+      <div class="micro-progress" data-color="success"><span style="width:${Math.min(mitigationRate, 100)}%"></span></div>
+    </article>
+    <article class="card">
+      <div class="label">Critical Hotspots</div>
+      <div class="value"><span class="value-number" data-animate="${riskIssues.length}" data-format="number">${riskIssues.length}</span></div>
+      <p class="card-subtext">${riskShare}% of backlog is 🔴 critical</p>
+      <div class="micro-progress" data-color="danger"><span style="width:${Math.min(riskShare, 100)}%"></span></div>
+    </article>
+    <article class="card">
+      <div class="label">Avg Payoff / Idea</div>
+      <div class="value"><span class="value-number" data-animate="${avgHoursPerIdea}" data-format="hours">${avgHoursPerIdea.toFixed(1)}</span><sup>hrs</sup></div>
+      <p class="card-subtext">Teams burn ${weeklyBurn.toFixed(1)} hrs/week on toil</p>
+      <div class="micro-progress" data-color="warning"><span style="width:${Math.min(backlogShare, 100)}%"></span></div>
+    </article>
+  `;
+  animateSummaryNumbers();
+}
+
+function animateSummaryNumbers() {
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#summaryCards [data-animate]').forEach(el => {
+      const target = parseFloat(el.dataset.animate) || 0;
+      const format = el.dataset.format || 'number';
+      animateValue(el, target, format);
+    });
+  });
+}
+
+function animateValue(el, target, format) {
+  const duration = 900;
+  const start = 0;
+  const startTime = performance.now();
+  function frame(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const eased = easeOutCubic(progress);
+    const current = start + (target - start) * eased;
+    el.textContent = formatAnimatedValue(current, format);
+    if (progress < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function formatAnimatedValue(value, format) {
+  if (format === 'percent') return `${Math.round(value)}%`;
+  if (format === 'hours') return `${value.toFixed(1)}`;
+  return `${Math.round(value)}`;
+}
+
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
+function renderHeroPulse(issues) {
+  const heroPulse = document.getElementById('heroPulse');
+  if (!heroPulse) return;
+  const total = issues.length || 0;
+  const automated = issues.filter(i => getStatus(i) === 'automated').length;
+  const automationRate = total ? Math.round((automated / total) * 100) : 0;
+  const highImpact = issues.filter(i => isCritical(i.toil_score) && getStatus(i) !== 'automated').length;
+  const backlog = issues.filter(i => getStatus(i) === 'toil').length;
+  heroPulse.innerHTML = `
+    <span class="pulse-pill success">⚡ ${automationRate}% automated</span>
+    <span class="pulse-pill warning">🔥 ${highImpact} critical</span>
+    <span class="pulse-pill neutral">📦 ${total} signals (${backlog} backlog)</span>
+  `;
+}
+
+function renderInsightPanels(issues) {
+  renderPipelineCard(issues);
+  renderRiskCard(issues);
+  renderTeamFocusCard(issues);
+}
+
+function renderPipelineCard(issues) {
+  const card = document.getElementById('pipelineCard');
+  if (!card) return;
+  const total = issues.length || 0;
+  const counts = { backlog: 0, triage: 0, building: 0, shipped: 0 };
+  issues.forEach(issue => {
+    const status = getStatus(issue);
+    if (status === 'automated') counts.shipped++;
+    else if (status === 'in-progress') counts.building++;
+    else if (status === 'triage') counts.triage++;
+    else counts.backlog++;
+  });
+  const automationRate = total ? Math.round((counts.shipped / total) * 100) : 0;
+  card.innerHTML = `
+    <div class="insight-header">
+      <span class="eyebrow">Pipeline Momentum</span>
+      <span class="mini-pill live">Live</span>
+    </div>
+    <div class="insight-body">
+      <div class="radial-progress"><strong>${automationRate}%</strong><span>Automated</span></div>
+      <div class="stat-list">
+        <div class="stat-row"><span>Automated</span><strong>${counts.shipped}</strong></div>
+        <div class="stat-row"><span>Building</span><strong>${counts.building}</strong></div>
+        <div class="stat-row"><span>Triage</span><strong>${counts.triage}</strong></div>
+        <div class="stat-row"><span>Backlog</span><strong>${counts.backlog}</strong></div>
+      </div>
+    </div>
+  `;
+  const gauge = card.querySelector('.radial-progress');
+  if (gauge) {
+    gauge.style.setProperty('--progress', `${automationRate * 3.6}deg`);
+  }
+}
+
+function renderRiskCard(issues) {
+  const card = document.getElementById('riskCard');
+  if (!card) return;
+  const openIssues = issues.filter(i => getStatus(i) !== 'automated');
+  const ranked = openIssues.sort((a, b) => (b.monthly_saved_minutes || 0) - (a.monthly_saved_minutes || 0)).slice(0, 3);
+  const maxMinutes = ranked[0]?.monthly_saved_minutes || 0;
+  const annualCost = ranked.reduce((sum, issue) => sum + ((issue.monthly_saved_minutes || 0) / 60) * 12 * 85, 0);
+  card.innerHTML = `
+    <div class="insight-header">
+      <span class="eyebrow">Risk Watchlist</span>
+      <span class="mini-pill">Top 3</span>
+    </div>
+    <div class="risk-list">
+      ${ranked.map((issue, idx) => {
+        const title = (issue.title || '').replace(/^\[TOIL\]\s*/i, '').split(' — ')[0] || `#${issue.number}`;
+        const minutes = issue.monthly_saved_minutes || 0;
+        const percent = maxMinutes ? Math.min(100, (minutes / maxMinutes) * 100) : 0;
+        return `<div>
+          <div class="risk-row">
+            <div>
+              <p>${idx + 1}. ${esc(title)}</p>
+              <small>${esc(issue.team || 'Unknown team')} • ${issue.priority || '—'} • ${formatMinutes(minutes)} / mo</small>
+            </div>
+            <span class="risk-value">${issue.toil_score}</span>
+          </div>
+          <div class="micro-progress" data-color="danger"><span style="width:${percent}%"></span></div>
+        </div>`;
+      }).join('')}
+    </div>
+    <p class="insight-note">Inaction tax: ${formatCurrencyShort(annualCost)} annually if these stay unfixed.</p>
+  `;
+}
+
+function renderTeamFocusCard(issues) {
+  const card = document.getElementById('teamFocusCard');
+  if (!card) return;
+  const teamMap = {};
+  issues.forEach(issue => {
+    const team = issue.team || 'Unknown';
+    if (!teamMap[team]) teamMap[team] = { weekly: 0, saved: 0, active: 0 };
+    teamMap[team].weekly += (issue.team_weekly_time_spent || 0);
+    teamMap[team].saved += (issue.monthly_saved_minutes || 0);
+    if (getStatus(issue) !== 'automated') teamMap[team].active++;
+  });
+  const teams = Object.entries(teamMap).sort((a, b) => (b[1].weekly || 0) - (a[1].weekly || 0)).slice(0, 3);
+  const focusTeam = teams[0];
+  card.innerHTML = `
+    <div class="insight-header">
+      <span class="eyebrow">Focus Radar</span>
+      <button class="mini-link" type="button" onclick="document.getElementById('breakdownSection').scrollIntoView({ behavior: 'smooth' });">Jump to leaderboard →</button>
+    </div>
+    <div class="team-pills">
+      ${teams.map(([team, data]) => `
+        <div class="team-pill">
+          <span>${esc(team)}</span>
+          <strong>${formatWeeklyTime(data.weekly)}</strong>
+          <small>${data.active} active toils • ${formatMinutes(data.saved)}</small>
+        </div>
+      `).join('')}
+    </div>
+    <p class="insight-note">${focusTeam ? `${esc(focusTeam[0])} is burning ${formatWeeklyTime(focusTeam[1].weekly)} each week — prime target for Codex automation.` : 'Log a few toils to see team focus insights.'}</p>
+  `;
+}
+
+// ── Executive Summary for Leadership ──
+
+// ── Team Name Management ──
+function getTeamRenames() {
+  return JSON.parse(localStorage.getItem('toilTeamRenames') || '{}');
+}
+function saveTeamRenames(renames) {
+  localStorage.setItem('toilTeamRenames', JSON.stringify(renames));
+}
+function applyTeamRenames(issues) {
+  const renames = getTeamRenames();
+  issues.forEach(i => {
+    if (i._originalTeam === undefined) i._originalTeam = i.team;
+    if (renames[i._originalTeam]) i.team = renames[i._originalTeam];
+  });
+}
+function renderTeamManager(issues) {
+  const renames = getTeamRenames();
+  const originalTeams = [...new Set(issues.map(i => i._originalTeam || i.team))].sort();
+  const container = document.getElementById('teamManagerList');
+  if (!originalTeams.length) { container.innerHTML = '<p style="font-size:0.85rem;color:#8b949e;">No teams found yet.</p>'; return; }
+  container.innerHTML = originalTeams.map(t => {
+    const current = renames[t] || t;
+    return `<div class="team-rename-row">
+      <span class="team-current">${esc(t)}</span>
+      <span class="arrow">→</span>
+      <input type="text" value="${esc(current)}" data-original="${esc(t)}" placeholder="New team name" />
+      <button class="btn btn-rename" onclick="renameTeam(this)">Rename</button>
+    </div>`;
+  }).join('');
+}
+function renameTeam(btn) {
+  const row = btn.closest('.team-rename-row');
+  const input = row.querySelector('input');
+  const original = input.dataset.original;
+  const newName = input.value.trim();
+  if (!newName) return;
+  const renames = getTeamRenames();
+  if (newName === original) { delete renames[original]; }
+  else { renames[original] = newName; }
+  saveTeamRenames(renames);
+  applyTeamRenames(dashboardData.issues);
+  render();
+  showToast(`🏷️ Team glow-up complete: ${original} → ${newName} ✨`);
+}
+
+// ── Team & Individual Breakdown ──
+function renderBreakdown(issues) {
+  const teamFilter = document.getElementById('breakdownTeamFilter').value;
+  const filtered = teamFilter ? issues.filter(i => i.team === teamFilter) : issues;
+
+  // Per-person
+  const personMap = {};
+  filtered.forEach(i => {
+    const name = i.submitter || 'Unknown';
+    if (!personMap[name]) personMap[name] = { submitted: 0, automated: 0, minsSaved: 0, weeklyMins: 0 };
+    personMap[name].submitted++;
+    if (getStatus(i) === 'automated') personMap[name].automated++;
+    personMap[name].minsSaved += (i.monthly_saved_minutes || 0);
+    personMap[name].weeklyMins += (i.weekly_time_spent || 0);
+  });
+
+  const tbody = document.querySelector('#personTable tbody');
+  const people = Object.entries(personMap).sort((a, b) => b[1].minsSaved - a[1].minsSaved);
+  let totalSub = 0, totalAuto = 0, totalMins = 0, totalWeekly = 0;
+
+  tbody.innerHTML = people.map(([name, d]) => {
+    totalSub += d.submitted; totalAuto += d.automated; totalMins += d.minsSaved; totalWeekly += d.weeklyMins;
+    return `<tr><td>${esc(name)}</td><td>${d.submitted}</td><td>${d.automated}</td><td>${formatWeeklyTime(d.weeklyMins)}</td><td>${formatMinutes(d.minsSaved)}</td></tr>`;
+  }).join('') + `<tr class="total-row"><td>Total</td><td>${totalSub}</td><td>${totalAuto}</td><td>${formatWeeklyTime(totalWeekly)}</td><td>${formatMinutes(totalMins)}</td></tr>`;
+
+  // Per-team table
+  const teamMap = {};
+  issues.forEach(i => {
+    const t = i.team || 'Unknown';
+    if (!teamMap[t]) teamMap[t] = { submitted: 0, automated: 0, minsSaved: 0 };
+    teamMap[t].submitted++;
+    if (getStatus(i) === 'automated') teamMap[t].automated++;
+    teamMap[t].minsSaved += (i.monthly_saved_minutes || 0);
+  });
+
+  const teams = Object.entries(teamMap).sort((a, b) => b[1].minsSaved - a[1].minsSaved);
+  const container = document.getElementById('teamTables');
+  if (teams.length > 1) {
+    let gt = { submitted: 0, automated: 0, minsSaved: 0 };
+    container.innerHTML = `<h3 style="font-size:0.95rem;margin-bottom:0.5rem;">🏢 Team Scoreboard</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>🏢 Team</th><th>💡 Ideas</th><th>🤖 Automated</th><th>⏱️ Time Given Back / Month</th></tr></thead>
+      <tbody>${teams.map(([t, d]) => {
+        gt.submitted += d.submitted; gt.automated += d.automated; gt.minsSaved += d.minsSaved;
+        return `<tr><td>${esc(t)}</td><td>${d.submitted}</td><td>${d.automated}</td><td>${formatMinutes(d.minsSaved)}</td></tr>`;
+      }).join('')}
+      <tr class="total-row"><td>Grand Total</td><td>${gt.submitted}</td><td>${gt.automated}</td><td>${formatMinutes(gt.minsSaved)}</td></tr>
+      </tbody></table></div>`;
+  } else {
+    container.innerHTML = '';
+  }
+}
+
+// ── Main Toil Table ──
+function renderToilTable(issues) {
+  const teamF = document.getElementById('filterTeam').value;
+  const catF = document.getElementById('filterCategory').value;
+  const statF = document.getElementById('filterStatus').value;
+
+  let filtered = issues.slice();
+  if (teamF) filtered = filtered.filter(i => i.team === teamF);
+  if (catF) filtered = filtered.filter(i => i.category === catF);
+  if (statF) filtered = filtered.filter(i => getStatus(i) === statF);
+
+  // Sort
+  filtered.sort((a, b) => {
+    let va = a[sortCol], vb = b[sortCol];
+    if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * sortDir;
+    va = String(va || '').toLowerCase(); vb = String(vb || '').toLowerCase();
+    return va < vb ? -sortDir : va > vb ? sortDir : 0;
+  });
+
+  // Sort arrows
+  document.querySelectorAll('#toilTable th').forEach(th => {
+    const col = th.dataset.col;
+    const arrow = col === sortCol ? (sortDir === 1 ? ' ▲' : ' ▼') : '';
+    const existing = th.querySelector('.sort-arrow');
+    if (existing) existing.textContent = arrow;
+    else if (col) {
+      const sp = document.createElement('span');
+      sp.className = 'sort-arrow';
+      sp.textContent = arrow;
+      th.appendChild(sp);
+    }
+  });
+
+  const tbody = document.querySelector('#toilTable tbody');
+  tbody.innerHTML = filtered.map(issue => {
+    const status = getStatus(issue);
+    const edited = localEdits[issue.number] ? '<span class="edited-marker">✎</span>' : '';
+    const bonusStr = (issue.bonus_factors || []).join(' ');
+    const rawTitle = (issue.title || '').replace(/^\[TOIL\]\s*/i, '');
+    const ghCmd = `gh copilot "Automate: ${rawTitle.replace(/"/g, '\\"')}"`;
+    
+    // Split "Name — Description" into two parts
+    const dashIdx = rawTitle.indexOf(' — ');
+    const toilName = dashIdx > -1 ? rawTitle.substring(0, dashIdx) : rawTitle.split(/\s+/).slice(0, 4).join(' ');
+    const toilDesc = dashIdx > -1 ? rawTitle.substring(dashIdx + 3) : (dashIdx === -1 && rawTitle.length > toilName.length ? rawTitle : '');
+
+    const safeUrl = issue.url && issue.url.startsWith('https://github.com/') ? issue.url : '#';
+    const actionBtn = `<button class="btn btn-launch" onclick="copyLaunchCmd(this, ${issue.number})" data-cmd="${esc(ghCmd, true)}" title="Launch Copilot CLI to solve this">🚀 Launch Copilot CLI to Solve</button>`;
+
+    return `<tr class="${priorityClass(issue.toil_score)}">
+      <td><a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="color:#0969da;font-weight:600;">#${issue.number}</a></td>
+      <td class="toil-cell"><div class="toil-name">${esc(toilName)}</div>${toilDesc ? `<div class="toil-desc">${esc(toilDesc)}</div>` : ''}</td>
+      <td class="toil-action-cell">${actionBtn}</td>
+      <td>${esc(issue.submitter)}</td>
+      <td>${esc(issue.team)}</td>
+      <td class="col-hidden">${esc(issue.category)}</td>
+      <td class="editable" data-issue="${issue.number}" data-field="frequency">${esc(issue.frequency)}${edited}</td>
+      <td class="editable" data-issue="${issue.number}" data-field="time_per_occurrence">${esc(issue.time_per_occurrence)}</td>
+      <td class="editable" data-issue="${issue.number}" data-field="people_affected">${esc(issue.people_affected)}</td>
+      <td style="font-weight:700">${issue.toil_score}</td>
+      <td>${statusBadge(status)}</td>
+      <td>${formatMinutes(issue.monthly_saved_minutes)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// INLINE EDITING
+// ═══════════════════════════════════════════════════
+document.addEventListener('click', function(e) {
+  const td = e.target.closest('td.editable');
+  if (!td || td.querySelector('select')) return;
+
+  const field = td.dataset.field;
+  const issueNum = Number(td.dataset.issue);
+  const issue = dashboardData.issues.find(i => i.number === issueNum);
+  if (!issue) return;
+
+  let options;
+  if (field === 'frequency') options = Object.keys(FREQ_SCORES);
+  else if (field === 'time_per_occurrence') options = Object.keys(TIME_SCORES);
+  else if (field === 'people_affected') options = Object.keys(PEOPLE_SCORES);
+  else return;
+
+  const current = issue[field];
+  const sel = document.createElement('select');
+  options.forEach(o => {
+    const opt = document.createElement('option');
+    opt.value = o; opt.textContent = o;
+    if (o === current) opt.selected = true;
+    sel.appendChild(opt);
+  });
+
+  td.textContent = '';
+  td.appendChild(sel);
+  sel.focus();
+
+  function commit() {
+    const newVal = sel.value;
+    if (newVal !== current) {
+      if (!localEdits[issueNum]) localEdits[issueNum] = {};
+      localEdits[issueNum][field] = newVal;
+      issue[field] = newVal;
+      const { score, monthlyMins } = calcScore(issue.frequency, issue.time_per_occurrence, issue.people_affected, issue.bonus_factors);
+      issue.toil_score = score;
+      issue.monthly_saved_minutes = monthlyMins;
+      issue.priority = getPriorityLabel(score);
+      saveLocalEdits();
+    }
+    render();
+  }
+
+  sel.addEventListener('change', commit);
+  sel.addEventListener('blur', commit);
+});
+
+// ═══════════════════════════════════════════════════
+// SORT
+// ═══════════════════════════════════════════════════
+document.querySelector('#toilTable thead').addEventListener('click', function(e) {
+  const th = e.target.closest('th');
+  if (!th || !th.dataset.col || th.dataset.col === 'actions') return;
+  const col = th.dataset.col;
+  if (col === sortCol) sortDir *= -1;
+  else { sortCol = col; sortDir = -1; }
+  render();
+});
+
+// ═══════════════════════════════════════════════════
+// FILTERS
+// ═══════════════════════════════════════════════════
+['filterTeam', 'filterCategory', 'filterStatus', 'breakdownTeamFilter'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => render());
+});
+document.getElementById('filterSort').addEventListener('change', function() {
+  sortCol = this.value;
+  sortDir = -1;
+  render();
+});
+
+// ═══════════════════════════════════════════════════
+// CLIPBOARD & TOAST
+// ═══════════════════════════════════════════════════
+function copyLaunchCmd(btn, issueNum) {
+  const cmd = btn.getAttribute('data-cmd');
+  navigator.clipboard.writeText(cmd).then(() => {
+    showToast('✅ Copied! Paste into your command line — Copilot will suggest how to automate it.');
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = cmd; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✅ Copied! Paste into your command line — Copilot will suggest how to automate it.');
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════
+/**
+ * Escapes HTML special characters to prevent XSS
+ * @param {string} str - String to escape
+ * @param {boolean} attr - If true, also escapes quotes for use in HTML attributes
+ * @returns {string} Escaped string
+ */
+function escapeHtml(str, attr) {
+  if (!str) return '';
+  const d = document.createElement('div');
+  d.textContent = str;
+  return attr ? d.innerHTML.replace(/"/g, '&quot;') : d.innerHTML;
+}
+// Compatibility alias (to be removed in future refactor)
+const esc = escapeHtml;
+
+// ═══════════════════════════════════════════════════
+// COLUMN TOGGLE
+// ═══════════════════════════════════════════════════
+let showAllCols = false;
+function toggleColumns() {
+  showAllCols = !showAllCols;
+  document.querySelectorAll('.col-hidden').forEach(el => el.style.display = showAllCols ? '' : 'none');
+  document.getElementById('toggleCols').textContent = showAllCols ? '− Fewer columns' : '+ Show all columns';
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+loadData();
+</script>
+</body>
+</html>

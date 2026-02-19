@@ -9,12 +9,26 @@ body:
         📍 **Where to review all submissions:**
         Use the links in the repo README to view all ideas, triage queue, in-progress, and completed items.
 
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ **Security reminder:** keep descriptions high-level—don't paste secrets, customer data, or internal-only URLs. See `SECURITY.md` for details.
+
   - type: input
     id: submitter
     attributes:
       label: Your name and GitHub handle
       description: So the team knows who submitted this and can tag you on updates
       placeholder: e.g. Jane Smith (@janesmith)
+    validations:
+      required: true
+
+  - type: input
+    id: team
+    attributes:
+      label: What team or group are you on?
+      description: Used to group and filter toil ideas by team in the dashboard
+      placeholder: e.g. Platform, DevEx, SRE, Marketing
     validations:
       required: true
 
@@ -66,11 +80,28 @@ body:
     validations:
       required: true
 
+  - type: dropdown
+    id: category
+    attributes:
+      label: What area does this toil fall under?
+      description: "Optional — helps with dashboard filtering. Skip if unsure!"
+      options:
+        - 🔧 CI/CD & Builds
+        - 💬 Communication & Reporting
+        - 👥 Onboarding & Access
+        - 🔍 Code Review & Quality
+        - 🖥️ Operations & Infrastructure
+        - 📝 Documentation
+        - 📊 Data & Analytics
+        - 🔄 Other
+    validations:
+      required: false
+
   - type: textarea
     id: automation-idea
     attributes:
-      label: Automation idea (if any)
-      description: How might an agent or script handle this?
-      placeholder: Optional - leave blank if you're not sure
+      label: Automation idea (optional)
+      description: How might an agent, script, or workflow handle this?
+      placeholder: Optional — leave blank if you're not sure
     validations:
       required: false

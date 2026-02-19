@@ -6,8 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        🎉 **Nice work!** Use this to log the impact of a completed automation.
-        This helps the team see the ROI and builds the case for more automation investment.
+        🎉 **You crushed some toil!** Let's capture the win — takes under 60 seconds.
 
   - type: input
     id: submitter
@@ -15,6 +14,15 @@ body:
       label: Your name and GitHub handle
       description: So the team knows who completed this and can tag you on updates
       placeholder: e.g. Jane Smith (@janesmith)
+    validations:
+      required: true
+
+  - type: input
+    id: team
+    attributes:
+      label: What team or group are you on?
+      description: Used to track wins by team in the dashboard
+      placeholder: e.g. Platform, DevEx, SRE, Marketing
     validations:
       required: true
 
@@ -62,6 +70,24 @@ body:
     validations:
       required: true
 
+  - type: input
+    id: actual-weekly-time-before
+    attributes:
+      label: How much time did the team spend on this per week BEFORE automation?
+      description: "Optional — helps calculate real ROI"
+      placeholder: "e.g. 10 hours/week"
+    validations:
+      required: false
+
+  - type: input
+    id: actual-weekly-time-after
+    attributes:
+      label: How much time does the team spend on this per week AFTER automation?
+      description: "Optional — helps calculate real ROI"
+      placeholder: "e.g. 0, 30 minutes, 1 hour"
+    validations:
+      required: false
+
   - type: dropdown
     id: people-benefited
     attributes:
@@ -79,10 +105,10 @@ body:
     id: estimated-monthly-savings
     attributes:
       label: Estimated time saved per month
-      description: Multiply frequency × time × people
+      description: "Optional — we'll estimate this from your other answers"
       placeholder: e.g. "10 hours/month"
     validations:
-      required: true
+      required: false
 
   - type: input
     id: effort-to-build

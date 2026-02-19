@@ -1,4 +1,6 @@
 name: AI Triage - Auto-score and label new toil ideas
+
+# Trigger: Runs when a new issue is opened with the 'toil' label, or manually via workflow_dispatch
 on:
   issues:
     types: [opened]
@@ -9,8 +11,8 @@ on:
         required: true
 
 permissions:
-  issues: write
-  models: read
+  issues: write  # Required to add labels and comments
+  models: read   # Required to call GitHub AI Models API
 
 jobs:
   ai-triage:
@@ -21,15 +23,19 @@ jobs:
         id: issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_ISSUE_NUM: ${{ github.event.inputs.issue_number }}
+          EVENT_ISSUE_NUM: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            ISSUE_NUM=${{ github.event.inputs.issue_number }}
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            ISSUE_NUM=$INPUT_ISSUE_NUM
           else
-            ISSUE_NUM=${{ github.event.issue.number }}
+            ISSUE_NUM=$EVENT_ISSUE_NUM
           fi
           echo "number=$ISSUE_NUM" >> "$GITHUB_OUTPUT"
 
-          BODY=$(gh issue view "$ISSUE_NUM" --repo "${{ github.repository }}" --json body --jq '.body')
+          BODY=$(gh issue view "$ISSUE_NUM" --repo "$REPO" --json body --jq '.body')
           echo "$BODY" > /tmp/issue_body.txt
 
       - name: Parse form fields and calculate score
@@ -37,7 +43,7 @@ jobs:
         run: |
           BODY=$(cat /tmp/issue_body.txt)
 
-          # Parse frequency
+          # ── Parse frequency (how often the toil happens) ──
           if echo "$BODY" | grep -q "Multiple times per day"; then
             FREQ_SCORE=8
             FREQ_LABEL="🔴 multiple-times-daily"
@@ -60,31 +66,42 @@ jobs:
             FREQ_TEXT="monthly or less"
           fi
 
-          # Parse time per occurrence
+          # ── Parse time per occurrence ──
           if echo "$BODY" | grep -q "> 1 hour"; then
             TIME_SCORE=8
-          elif echo "$BODY" | grep -q "30.60 minutes"; then
+          elif echo "$BODY" | grep -q "30.*60 minutes"; then
             TIME_SCORE=5
-          elif echo "$BODY" | grep -q "15.30 minutes"; then
+          elif echo "$BODY" | grep -q "15.*30 minutes"; then
             TIME_SCORE=3
-          elif echo "$BODY" | grep -q "5.15 minutes"; then
+          elif echo "$BODY" | grep -q "5.*15 minutes"; then
             TIME_SCORE=2
           else
             TIME_SCORE=1
           fi
 
-          # Parse people affected
+          # ── Parse people affected ──
           if echo "$BODY" | grep -q "Multiple teams"; then
             PEOPLE_SCORE=8
           elif echo "$BODY" | grep -q "Entire team"; then
             PEOPLE_SCORE=5
-          elif echo "$BODY" | grep -q "4.6 people"; then
+          elif echo "$BODY" | grep -q "4.*6 people"; then
             PEOPLE_SCORE=3
-          elif echo "$BODY" | grep -q "2.3 people"; then
+          elif echo "$BODY" | grep -q "2.*3 people"; then
             PEOPLE_SCORE=2
           else
             PEOPLE_SCORE=1
           fi
+
+          # Parse weekly time spent (individual)
+          WEEKLY_TIME=$(echo "$BODY" | sed -n '/How much total time do you spend/,/###/{/###/!p;}' | grep -v '^$' | head -1 | xargs)
+          if [ -z "$WEEKLY_TIME" ]; then WEEKLY_TIME="Not specified"; fi
+
+          # Parse team weekly time spent
+          TEAM_WEEKLY_TIME=$(echo "$BODY" | sed -n '/How much total time does your TEAM/,/###/{/###/!p;}' | grep -v '^$' | head -1 | xargs)
+          if [ -z "$TEAM_WEEKLY_TIME" ]; then TEAM_WEEKLY_TIME="Not specified"; fi
+
+          echo "weekly_time=$WEEKLY_TIME" >> "$GITHUB_OUTPUT"
+          echo "team_weekly_time=$TEAM_WEEKLY_TIME" >> "$GITHUB_OUTPUT"
 
           # Calculate toil score
           TOIL_SCORE=$((FREQ_SCORE * TIME_SCORE * PEOPLE_SCORE))
@@ -128,10 +145,6 @@ jobs:
             MONTHLY_SAVED="~${MONTHLY_MINS} minutes/month"
           fi
 
-          # Extract toil description for AI prompt
-          TOIL_DESC=$(echo "$BODY" | sed -n '/What'\''s the toil/,/How often/p' | head -n -1 | tail -n +2)
-          echo "$TOIL_DESC" > /tmp/toil_desc.txt
-
           echo "freq_score=$FREQ_SCORE" >> "$GITHUB_OUTPUT"
           echo "time_score=$TIME_SCORE" >> "$GITHUB_OUTPUT"
           echo "people_score=$PEOPLE_SCORE" >> "$GITHUB_OUTPUT"
@@ -141,22 +154,62 @@ jobs:
           echo "freq_label=$FREQ_LABEL" >> "$GITHUB_OUTPUT"
           echo "monthly_saved=$MONTHLY_SAVED" >> "$GITHUB_OUTPUT"
 
+      - name: Check for similar issues
+        id: dedup
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUM: ${{ steps.issue.outputs.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          TITLE=$(gh issue view "$ISSUE_NUM" --repo "$REPO" --json title --jq '.title')
+
+          # Extract keywords from title (remove [TOIL] prefix, short words, and punctuation)
+          KEYWORDS=$(echo "$TITLE" | sed 's/\[TOIL\]//g' | tr -cs '[:alnum:]' ' ' | tr ' ' '\n' | awk 'length>=4' | head -5 | tr '\n' ' ')
+
+          # Search for related open issues with toil label
+          RELATED=""
+          if [ -n "$KEYWORDS" ]; then
+            RELATED=$(gh search issues "$KEYWORDS" --repo "$REPO" --label toil --state open --limit 5 --json number,title --jq ".[] | select(.number != $ISSUE_NUM) | \"- #\\(.number) \\(.title)\"")
+          fi
+
+          if [ -n "$RELATED" ]; then
+            echo "$RELATED" > /tmp/related_issues.txt
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "" > /tmp/related_issues.txt
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: AI - Suggest automation approach
         id: ai
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WEEKLY_TIME: ${{ steps.score.outputs.weekly_time }}
+          TEAM_WEEKLY_TIME: ${{ steps.score.outputs.team_weekly_time }}
         run: |
-          TOIL_DESC=$(cat /tmp/toil_desc.txt)
           BODY=$(cat /tmp/issue_body.txt)
 
-          PROMPT="You are an automation advisor. A team member submitted this toil item:
+          PROMPT="You are a senior automation engineer advising a team. Be specific and actionable.
+
+          A team member submitted this toil item:
 
           ${BODY}
 
-          Suggest a specific, practical automation approach in 3-4 sentences. Focus on:
+          The submitter reports spending ${WEEKLY_TIME} per week personally on this,
+          and estimates the team spends ${TEAM_WEEKLY_TIME} per week total.
+
+          Factor these real time numbers into your suggestion. Compare the current time
+          spent vs. what it would cost to automate. Calculate the payback period.
+
+          Suggest a specific, practical automation approach. Focus on:
           1. The best tool for the job (GitHub Action, script, Copilot agent, Slack workflow, API integration, etc.)
           2. A brief description of how it would work
           3. Estimated effort to build (hours/days)
+
+          Format your response as: **Tool:** [tool name] | **Approach:** [2-3 sentences] | **Effort:** [estimate] | **Confidence:** [High/Medium/Low]
+
+          Example for a toil item about manually copying deploy logs:
+          **Tool:** GitHub Action | **Approach:** Create a post-deploy workflow that extracts logs via the GitHub API and appends them to a Google Sheet using a service account. Trigger on workflow_run completion for deploy workflows. | **Effort:** 4-6 hours | **Confidence:** High
 
           Be concise and practical. No fluff."
 
@@ -167,8 +220,8 @@ jobs:
             -d "$(jq -n --arg prompt "$PROMPT" '{
               "model": "openai/gpt-4o-mini",
               "messages": [{"role": "user", "content": $prompt}],
-              "max_tokens": 300,
-              "temperature": 0.7
+              "max_tokens": 400,
+              "temperature": 0.5
             }')" | jq -r '.choices[0].message.content // "Unable to generate suggestion at this time."')
 
           # Escape for GitHub output
@@ -181,16 +234,17 @@ jobs:
       - name: Apply labels
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUM: ${{ steps.issue.outputs.number }}
+          REPO: ${{ github.repository }}
+          FREQ_LABEL: ${{ steps.score.outputs.freq_label }}
+          PRIORITY_LABEL: ${{ steps.score.outputs.priority_label }}
         run: |
-          ISSUE_NUM=${{ steps.issue.outputs.number }}
-          REPO="${{ github.repository }}"
-
           # Add frequency label
-          gh issue edit "$ISSUE_NUM" --repo "$REPO" --add-label "${{ steps.score.outputs.freq_label }}"
+          gh issue edit "$ISSUE_NUM" --repo "$REPO" --add-label "$FREQ_LABEL"
 
           # Add priority label if high enough
-          if [ -n "${{ steps.score.outputs.priority_label }}" ]; then
-            gh issue edit "$ISSUE_NUM" --repo "$REPO" --add-label "${{ steps.score.outputs.priority_label }}"
+          if [ -n "$PRIORITY_LABEL" ]; then
+            gh issue edit "$ISSUE_NUM" --repo "$REPO" --add-label "$PRIORITY_LABEL"
           fi
 
           # Remove triage label (auto-triaged by AI)
@@ -199,25 +253,109 @@ jobs:
       - name: Post triage comment
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUM: ${{ steps.issue.outputs.number }}
+          REPO: ${{ github.repository }}
+          DEDUP_FOUND: ${{ steps.dedup.outputs.found }}
+          FREQ_SCORE: ${{ steps.score.outputs.freq_score }}
+          TIME_SCORE: ${{ steps.score.outputs.time_score }}
+          PEOPLE_SCORE: ${{ steps.score.outputs.people_score }}
+          TOIL_SCORE: ${{ steps.score.outputs.toil_score }}
+          PRIORITY: ${{ steps.score.outputs.priority }}
+          MONTHLY_SAVED: ${{ steps.score.outputs.monthly_saved }}
+          WEEKLY_TIME: ${{ steps.score.outputs.weekly_time }}
+          TEAM_WEEKLY_TIME: ${{ steps.score.outputs.team_weekly_time }}
+          AI_SUGGESTION: ${{ steps.ai.outputs.suggestion }}
         run: |
-          ISSUE_NUM=${{ steps.issue.outputs.number }}
+          RELATED_SECTION=""
+          if [ "$DEDUP_FOUND" = "true" ]; then
+            RELATED_SECTION="---
+
+          ### 🔗 Possibly Related Issues
+
+          $(cat /tmp/related_issues.txt)"
+          fi
 
           COMMENT="## 🤖 AI Triage Report
 
-          **Toil Score:** Frequency (${{ steps.score.outputs.freq_score }}) x Time (${{ steps.score.outputs.time_score }}) x People (${{ steps.score.outputs.people_score }}) = **${{ steps.score.outputs.toil_score }}**
+          **Toil Score:** Frequency ($FREQ_SCORE) x Time ($TIME_SCORE) x People ($PEOPLE_SCORE) = **$TOIL_SCORE**
 
-          **Priority:** ${{ steps.score.outputs.priority }}
+          **Priority:** $PRIORITY
 
-          **Estimated team time saved if automated:** ${{ steps.score.outputs.monthly_saved }}
+          **Estimated team time saved if automated:** $MONTHLY_SAVED
+
+          **⏱️ Current time spent:** $WEEKLY_TIME (you) · $TEAM_WEEKLY_TIME (team) per week
 
           ---
 
           ### 💡 Suggested Automation Approach
 
-          ${{ steps.ai.outputs.suggestion }}
+          $AI_SUGGESTION
+
+          ${RELATED_SECTION}
 
           ---
 
-          _This issue was auto-triaged by AI. Labels and score have been applied. Review the [scoring guide](../blob/main/docs/scoring-guide.md) for details._"
+          _This issue was auto-triaged by AI. Labels and score have been applied. Review the [scoring guide](https://github.com/$REPO/blob/main/docs/scoring-guide.md) for details._"
 
-          gh issue comment "$ISSUE_NUM" --repo "${{ github.repository }}" --body "$COMMENT"
+          gh issue comment "$ISSUE_NUM" --repo "$REPO" --body "$COMMENT"
+
+      - name: Notify Microsoft Teams
+        if: secrets.TEAMS_WEBHOOK_URL != ''
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          ISSUE_NUM: ${{ steps.issue.outputs.number }}
+          REPO: ${{ github.repository }}
+          FREQ_SCORE: ${{ steps.score.outputs.freq_score }}
+          TIME_SCORE: ${{ steps.score.outputs.time_score }}
+          PEOPLE_SCORE: ${{ steps.score.outputs.people_score }}
+          TOIL_SCORE: ${{ steps.score.outputs.toil_score }}
+          PRIORITY: ${{ steps.score.outputs.priority }}
+          MONTHLY_SAVED: ${{ steps.score.outputs.monthly_saved }}
+          AI_SUGGESTION: ${{ steps.ai.outputs.suggestion }}
+        run: |
+          ISSUE_TITLE=$(gh issue view "$ISSUE_NUM" --repo "$REPO" --json title --jq '.title')
+          ISSUE_URL="https://github.com/$REPO/issues/${ISSUE_NUM}"
+          CLEAN_TITLE=$(echo "$ISSUE_TITLE" | sed 's/\[TOIL\] *//')
+          M365_PROMPT=$(python3 -c "import urllib.parse; print(urllib.parse.quote('Help me automate this repetitive task: ${CLEAN_TITLE}. Suggest a step-by-step plan.'))" 2>/dev/null || echo "")
+          M365_URL="https://teams.microsoft.com/l/entity/fb172f18-fc48-4d13-b2cf-30c268157fa3/copilot"
+
+          TEAMS_BODY=$(jq -n \
+            --arg title "🤖 AI Triage Report — ${ISSUE_TITLE}" \
+            --arg score "**Toil Score:** Frequency ($FREQ_SCORE) × Time ($TIME_SCORE) × People ($PEOPLE_SCORE) = **$TOIL_SCORE**" \
+            --arg priority "**Priority:** $PRIORITY" \
+            --arg saved "**Estimated team time saved if automated:** $MONTHLY_SAVED" \
+            --arg suggestion "$AI_SUGGESTION" \
+            --arg url "$ISSUE_URL" \
+            --arg m365url "$M365_URL" \
+            '{
+              "type": "message",
+              "attachments": [
+                {
+                  "contentType": "application/vnd.microsoft.card.adaptive",
+                  "contentUrl": null,
+                  "content": {
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "type": "AdaptiveCard",
+                    "version": "1.4",
+                    "body": [
+                      { "type": "TextBlock", "size": "Medium", "weight": "Bolder", "text": $title },
+                      { "type": "TextBlock", "text": $score, "wrap": true },
+                      { "type": "TextBlock", "text": $priority, "wrap": true },
+                      { "type": "TextBlock", "text": $saved, "wrap": true },
+                      { "type": "TextBlock", "text": "---", "wrap": true },
+                      { "type": "TextBlock", "text": "💡 **Suggested Automation Approach**", "weight": "Bolder", "wrap": true },
+                      { "type": "TextBlock", "text": $suggestion, "wrap": true }
+                    ],
+                    "actions": [
+                      { "type": "Action.OpenUrl", "title": "View Issue on GitHub", "url": $url },
+                      { "type": "Action.OpenUrl", "title": "💬 Ask Copilot in Teams", "url": $m365url }
+                    ]
+                  }
+                }
+              ]
+            }')
+
+          curl -s -o /dev/null -w "%{http_code}" \
+            -H "Content-Type: application/json" \
+            -d "$TEAMS_BODY" \
+            "$TEAMS_WEBHOOK_URL"
