@@ -1,17 +1,17 @@
 {
-  "generatedAt": "",
-  "repository": "DUBSOpenHub/ai-toil-tracker",
-  "summary": {
-    "totalToilItems": 0,
-    "openToilItems": 0,
-    "automatedItems": 0,
-    "totalWins": 0,
-    "totalMonthlyMinutes": 0,
-    "totalMonthlySaved": "~0 minutes/month"
+  "meta": {
+    "generatedAt": "2026-02-23T03:20:49Z",
+    "repo": "DUBSOpenHub/ai-toil-tracker",
+    "labels": {
+      "toil": "toil",
+      "automated": "automated"
+    },
+    "summary": {
+      "totalToil": 0,
+      "openToil": 0,
+      "automated": 0,
+      "monthlyMinutes": null
+    }
   },
-  "byCategory": [],
-  "byTeam": [],
-  "topItems": [],
-  "toilItems": [],
-  "wins": []
+  "issues": []
 }
