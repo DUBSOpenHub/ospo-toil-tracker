@@ -5,6 +5,7 @@ Get your team's toil tracker live with zero configuration.
 ## Step 1: Fork the Repo
 - Click **Fork** (top right) on the [AI Toil Tracker](https://github.com/DUBSOpenHub/ai-toil-tracker) page
 - Keep the default settings and click **Create fork**
+- **Tip:** You can rename your fork in **Settings → General → Repository name** (e.g. `toil-tracker` or `automation-backlog`). Your dashboard URL will update automatically.
 
 ## Step 2: Enable GitHub Actions
 - Go to the **Actions** tab in your new fork
