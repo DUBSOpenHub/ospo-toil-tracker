@@ -19,5 +19,12 @@
     "openToil": 0,
     "automated": 0,
     "monthlyMinutes": null
+  },
+  {
+    "date": "2026-02-26",
+    "totalToil": 0,
+    "openToil": 0,
+    "automated": 0,
+    "monthlyMinutes": null
   }
 ]
