@@ -26,6 +26,8 @@ Every team has busywork - the manual, repetitive tasks that eat up time and coul
 
 > **To create your own demo GIF:** Use a screen recorder ([Kap](https://getkap.co) on Mac, [ShareX](https://getsharex.com) on Windows) to capture the flow above. Save it as `docs/assets/demo.gif` and it will appear here automatically.
 
+> ⚡ **Get started fast!** [Use this template](https://github.com/DUBSOpenHub/ai-toil-tracker/generate) to create your own Toil Tracker in one click.
+
 ## How AI Is Used
 
 This isn't just a tracker - AI is built into the workflow:
