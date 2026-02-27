@@ -99,14 +99,14 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 .card.card-teaser .micro-progress span { width: 15% !important; opacity: 0.4; }
 
 /* ── Card Help Tooltips ── */
-.card-help { display: inline-flex; align-items: center; justify-content: center; width: 1.1rem; height: 1.1rem; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: var(--text-soft); font-size: 0.6rem; font-weight: 700; cursor: help; position: relative; margin-left: 0.4rem; vertical-align: middle; transition: all 150ms ease; }
-.card-help:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-.card-help .card-tip { display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #1a1a2e; color: #e4e4f0; font-size: 0.78rem; font-weight: 400; line-height: 1.45; padding: 0.65rem 0.85rem; border-radius: 0.5rem; border: 1px solid #2d2d44; box-shadow: 0 8px 24px rgba(0,0,0,0.4); width: 220px; white-space: normal; text-transform: none; letter-spacing: 0; z-index: 100; }
-.card-help .card-tip::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: #2d2d44; }
+.card-help { display: inline-flex; align-items: center; justify-content: center; width: 1.1rem; height: 1.1rem; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: var(--text-soft); font-size: 0.6rem; font-weight: 700; cursor: help; position: relative; margin-left: 0.4rem; vertical-align: middle; transition: all 150ms ease; z-index: 10; }
+.card-help:hover { background: var(--accent); color: #fff; border-color: var(--accent); z-index: 1000; }
+.card-help .card-tip { display: none; position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #1a1a2e; color: #e4e4f0; font-size: 0.78rem; font-weight: 400; line-height: 1.45; padding: 0.65rem 0.85rem; border-radius: 0.5rem; border: 1px solid #2d2d44; box-shadow: 0 8px 24px rgba(0,0,0,0.4); width: 240px; white-space: normal; text-transform: none; letter-spacing: 0; z-index: 1001; pointer-events: none; }
+.card-help .card-tip::after { content: ""; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-bottom-color: #2d2d44; }
 .card-help:hover .card-tip { display: block; }
 .light .card-help { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.1); }
 .light .card-help .card-tip { background: #fff; color: #1a1a2e; border-color: #dfe3ec; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
-.light .card-help .card-tip::after { border-top-color: #dfe3ec; }
+.light .card-help .card-tip::after { border-bottom-color: #dfe3ec; border-top-color: transparent; }
 
 .dark .card:hover { border-color: #3b3c49; }
 .dark .card .value { color: #f5f7ff; }
@@ -114,7 +114,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 
 /* ── Insight Panels ── */
 .insights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; align-items: stretch; }
-.insight-card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow-sm); position: relative; overflow: hidden; transition: all 150ms ease; animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards; display: flex; flex-direction: column; }
+.insight-card { background: var(--bg-card); border: 1px solid var(--border-card); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow-sm); position: relative; overflow: visible; transition: all 150ms ease; animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards; display: flex; flex-direction: column; }
 .insight-card:nth-child(1) { animation-delay: 0.1s; }
 .insight-card:nth-child(2) { animation-delay: 0.2s; }
 .insight-card:nth-child(3) { animation-delay: 0.3s; }
@@ -477,7 +477,7 @@ td.editable input, td.editable select { font-size: 0.82rem; padding: 0.2rem 0.35
     <article class="insight-card" id="pipelineCard"></article>
     <article class="insight-card" id="trendChartCard">
       <div class="insight-header">
-        <span class="eyebrow">Time Reclaimed</span>
+        <span class="eyebrow">Time Reclaimed <span class="card-help">?<span class="card-tip">Monthly hours your team gets back as toil is automated. Each bar shows cumulative time savings over time.</span></span></span>
         <span class="mini-pill live">Live</span>
       </div>
       <div id="trendChart" role="img" aria-label="Bar chart showing monthly hours saved from automation over time"></div>
@@ -487,7 +487,7 @@ td.editable input, td.editable select { font-size: 0.82rem; padding: 0.2rem 0.35
 
   <!-- Main Toil Ideas Table -->
   <div class="section">
-    <h2>🗂️ Toil Backlog</h2>
+    <h2>🗂️ Toil Backlog <span class="card-help">?<span class="card-tip">All toil issues filed by your team. Sort by impact score or time saved to prioritize what to automate first.</span></span></h2>
     <div class="filters" role="search" aria-label="Filter toil ideas">
       <label for="searchToil" class="sr-only">Search:</label>
       <input type="search" id="searchToil" placeholder="🔍 Search toil ideas..." aria-label="Search toil ideas" style="padding:0.5rem 0.75rem;border:1px solid var(--border-card);border-radius:calc(var(--radius) - 0.25rem);font-size:0.875rem;background:var(--bg-card);box-shadow:var(--shadow-sm);color:var(--text-primary);min-width:200px;flex:1;max-width:320px;">
@@ -1280,7 +1280,7 @@ function renderPipelineCard(issues) {
   const automationRate = total ? Math.round((counts.shipped / total) * 100) : 0;
   card.innerHTML = `
     <div class="insight-header">
-      <span class="eyebrow">Pipeline Momentum</span>
+      <span class="eyebrow">Pipeline Momentum <span class="card-help">?<span class="card-tip">Shows where your toil issues are in the automation pipeline — from backlog to shipped. The gauge tracks your overall automation rate.</span></span></span>
       <span class="mini-pill live">Live</span>
     </div>
     <div class="insight-body">
