@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://api.github.com; img-src 'self' data:;">
-<title>AI Toil Tracker — Reduce Toil, Gain Leverage</title>
+<title>AI Toil Tracker — Live Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -433,9 +433,9 @@ td.editable input, td.editable select { font-size: 0.82rem; padding: 0.2rem 0.35
 
 <div class="header">
   <div class="hero-left">
-    <p class="hero-eyebrow">Built with GitHub Copilot CLI</p>
-    <h1>⚡ AI Toil Tracker</h1>
-    <p class="hero-subtitle">See your team's repetitive work, watch AI eliminate it, and track the hours you get back.</p>
+    <p class="hero-eyebrow">Live Data · DUBSOpenHub/ai-first-toil-tracker</p>
+    <h1>⚡ AI Toil Tracker — Live</h1>
+    <p class="hero-subtitle">Real-time view of your team's toil issues. Data pulled directly from GitHub Issues.</p>
     <div class="hero-pulse" id="heroPulse">
       <span class="pulse-pill neutral">⚡ Scanning for toil…</span>
     </div>
@@ -809,18 +809,7 @@ function normalizeData(raw) {
 }
 
 async function loadData() {
-  // Try local JSON first
-  try {
-    const res = await fetch('dashboard-data.json');
-    if (res.ok) {
-      dashboardData = normalizeData(await res.json());
-      applyLocalEdits();
-      render();
-      return;
-    }
-  } catch (_) { /* fall through */ }
-
-  // Fallback: GitHub API
+  // Live dashboard: fetch directly from GitHub API
   try {
     const apiUrl = `https://api.github.com/repos/${CONFIG.fullRepo}/issues?labels=toil&state=all&per_page=100`;
     const res = await fetch(apiUrl);
@@ -833,12 +822,34 @@ async function loadData() {
         return;
       }
     }
-  } catch (_) { /* fall through */ }
+  } catch (err) {
+    console.error('GitHub API fetch failed:', err);
+  }
 
-  // Fallback: sample data
-  dashboardData = SAMPLE_DATA;
-  applyLocalEdits();
+  // No data — show empty state
+  dashboardData = { repo: CONFIG.fullRepo, generated_at: new Date().toISOString(), issues: [] };
   render();
+  showEmptyState();
+}
+
+function showEmptyState() {
+  const container = document.querySelector('.container');
+  const msg = document.createElement('div');
+  msg.className = 'section';
+  msg.style.textAlign = 'center';
+  msg.style.padding = '3rem 2rem';
+  msg.innerHTML = `
+    <h2 style="margin-bottom:1rem">📭 No toil issues found yet</h2>
+    <p style="color:var(--text-soft);max-width:480px;margin:0 auto 1.5rem">
+      Issues labeled <code style="background:rgba(14,138,22,0.12);color:#0e8a16;padding:0.15rem 0.45rem;border-radius:4px;font-size:0.85rem">toil</code>
+      in <a href="https://github.com/${CONFIG.fullRepo}/issues" target="_blank" rel="noopener">${CONFIG.fullRepo}</a> will appear here automatically.
+    </p>
+    <a href="https://github.com/${CONFIG.fullRepo}/issues/new/choose" target="_blank" rel="noopener"
+       style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.65rem 1.25rem;background:var(--accent-strong);color:#fff;border-radius:var(--radius);text-decoration:none;font-weight:600;font-size:0.9rem">
+      ＋ File a Toil Idea
+    </a>
+  `;
+  container.prepend(msg);
 }
 
 function convertApiIssues(apiIssues) {
