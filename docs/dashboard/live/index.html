@@ -778,6 +778,33 @@ const localEdits = JSON.parse(localStorage.getItem('toilEdits') || '{}');
 // DATA LOADING
 // ═══════════════════════════════════════════════════
 function normalizeData(raw) {
+  // Workflow-generated format: { meta: {...}, issues: [{scoring:{}, roi:{}}] }
+  if (raw.meta && raw.issues) {
+    return {
+      repo: raw.meta.repo || CONFIG.fullRepo,
+      generated_at: raw.meta.generatedAt || new Date().toISOString(),
+      issues: raw.issues.map(item => ({
+        number: item.number,
+        title: item.title,
+        url: item.url,
+        state: (item.state || '').toLowerCase(),
+        labels: item.labels || [],
+        submitter: item.author ? `${item.author} (@${item.author})` : 'Unknown',
+        team: item.team || 'Unknown',
+        category: item.category || 'Other',
+        frequency: reverseFreqScore(item.scoring?.frequency),
+        time_per_occurrence: reverseTimeScore(item.scoring?.time),
+        people_affected: reversePeopleScore(item.scoring?.people),
+        bonus_factors: [],
+        automation_idea: '',
+        toil_score: item.scoring?.adjusted || item.scoring?.base || 1,
+        priority: getPriorityLabel(item.scoring?.adjusted || item.scoring?.base || 1),
+        monthly_saved_minutes: item.roi?.monthlyMins || 0,
+        created_at: item.createdAt,
+        ai_suggestion: ''
+      }))
+    };
+  }
   if (raw.toilItems) {
     return {
       repo: raw.repository,
@@ -807,6 +834,19 @@ function normalizeData(raw) {
     };
   }
   return raw; // Legacy format pass-through
+}
+
+function reverseFreqScore(s) {
+  const map = {8:'🔴 Multiple times per day',5:'🟠 Daily',3:'🟡 Multiple times per week',2:'🔵 Weekly',1:'⚪ Monthly or less'};
+  return map[s] || '⚪ Monthly or less';
+}
+function reverseTimeScore(s) {
+  const map = {8:'> 1 hour',5:'30–60 minutes',3:'15–30 minutes',2:'5–15 minutes',1:'< 5 minutes'};
+  return map[s] || '< 5 minutes';
+}
+function reversePeopleScore(s) {
+  const map = {8:'Multiple teams / org-wide',5:'Entire team',3:'4–6 people',2:'2–3 people',1:'Just me'};
+  return map[s] || 'Just me';
 }
 
 async function loadData() {
