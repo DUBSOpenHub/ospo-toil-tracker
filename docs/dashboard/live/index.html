@@ -1060,25 +1060,17 @@ function render() {
   // Populate filter dropdowns
   populateFilters(issues);
 
-  // Summary cards
+  // Summary cards (dynamically shows relevant cards)
   renderSummaryCards(issues);
 
   // Hero + insight telemetry
   renderHeroPulse(issues);
-
-  // Hide panels that have no meaningful data yet
-  const hasMultipleIssues = issues.length > 1;
-  const hasAutomated = issues.some(i => getStatus(i) === 'automated');
-  const hasTeams = new Set(issues.map(i => i.team).filter(Boolean)).size > 1;
-
-  document.getElementById('insightsGrid').style.display = hasMultipleIssues ? '' : 'none';
-
   renderInsightPanels(issues);
 
-  // Trend chart — only show if there's history
+  // Trend chart
   renderTrendChart(issues);
 
-  // Team manager + breakdown — only show with multiple teams
+  // Team manager + breakdown
   renderTeamFocusCard(issues);
 
   // Main table
