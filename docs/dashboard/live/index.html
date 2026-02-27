@@ -94,6 +94,8 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 .card.emerald { background: linear-gradient(135deg, #f0fdf4, #f0f9ff); }
 .dark .card { background: #111117; border: 1px solid #27272a; box-shadow: var(--shadow-sm); }
 .dark .card.emerald { background: linear-gradient(135deg, #0a1a14, #0d1520); border-color: #1a3a2a; }
+.card.card-teaser { opacity: 0.55; border-style: dashed; }
+.card.card-teaser:hover { opacity: 0.75; }
 .dark .card:hover { border-color: #3b3c49; }
 .dark .card .value { color: #f5f7ff; }
 .dark .card .card-subtext { color: #9ea4b8; }
@@ -1155,6 +1157,14 @@ function renderSummaryCards(issues) {
       <div class="delta ${deltaClass}">${deltaLabel}</div>
       <p class="card-subtext">${automated} of ${total} toil signals retired</p>
     </article>`);
+  } else {
+    cards.push(`
+    <article class="card card-teaser">
+      <div class="label">Automation Velocity</div>
+      <div class="value" style="color:var(--text-soft);opacity:0.4">—</div>
+      <p class="card-subtext">Unlocks when first toil is automated</p>
+      <div class="micro-progress"><span style="width:0%"></span></div>
+    </article>`);
   }
 
   if (riskIssues.length > 0) {
@@ -1165,15 +1175,13 @@ function renderSummaryCards(issues) {
       <p class="card-subtext">${riskShare}% of backlog is 🔴 critical</p>
       <div class="micro-progress" data-color="danger"><span style="width:${Math.min(riskShare, 100)}%"></span></div>
     </article>`);
-  }
-
-  if (total > 2) {
+  } else {
     cards.push(`
-    <article class="card">
-      <div class="label">Avg Payoff / Idea</div>
-      <div class="value"><span class="value-number" data-animate="${avgHoursPerIdea}" data-format="hours">${avgHoursPerIdea.toFixed(1)}</span><sup>hrs</sup></div>
-      <p class="card-subtext">Teams burn ${weeklyBurn.toFixed(1)} hrs/week on toil</p>
-      <div class="micro-progress" data-color="warning"><span style="width:${Math.min(backlogShare, 100)}%"></span></div>
+    <article class="card card-teaser">
+      <div class="label">Critical Hotspots</div>
+      <div class="value" style="color:var(--text-soft);opacity:0.4">—</div>
+      <p class="card-subtext">Tracks high-impact toil (score ≥ 40)</p>
+      <div class="micro-progress"><span style="width:0%"></span></div>
     </article>`);
   }
 
