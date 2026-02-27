@@ -434,7 +434,8 @@ td.editable input, td.editable select { font-size: 0.82rem; padding: 0.2rem 0.35
 <div class="header">
   <div class="hero-left">
     <p class="hero-eyebrow">Live Data · DUBSOpenHub/ai-first-toil-tracker</p>
-    <h1>⚡ AI Toil Tracker — <span id="teamName" title="Click to rename your team" style="cursor:pointer">Open Source Programs Team</span></h1>
+    <h1>⚡ AI Toil Tracker</h1>
+    <p id="teamName" title="Click to rename your team" style="cursor:pointer;font-size:1.4rem;font-weight:700;color:rgba(255,255,255,0.92);margin-top:0.15rem;letter-spacing:-0.01em">Open Source Programs Team ✎</p>
     <p class="hero-subtitle">Real-time view of your team's toil issues. Data pulled directly from GitHub Issues.</p>
     <div class="hero-pulse" id="heroPulse">
       <span class="pulse-pill neutral">⚡ Scanning for toil…</span>
@@ -1762,13 +1763,13 @@ function exportJSON() {
   const el = document.getElementById('teamName');
   const key = 'toilDashTeamName';
   const saved = localStorage.getItem(key);
-  if (saved) el.textContent = saved;
+  if (saved) el.textContent = saved + ' ✎';
 
   el.addEventListener('click', function() {
-    const current = el.textContent;
+    const current = el.textContent.replace(/\s*✎$/, '');
     const name = prompt('Enter your team name:', current);
     if (name !== null && name.trim()) {
-      el.textContent = name.trim();
+      el.textContent = name.trim() + ' ✎';
       localStorage.setItem(key, name.trim());
     }
   });
