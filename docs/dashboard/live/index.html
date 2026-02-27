@@ -97,6 +97,17 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 .card.card-teaser { border-style: dashed; }
 .card.card-teaser .value { opacity: 0.35; }
 .card.card-teaser .micro-progress span { width: 15% !important; opacity: 0.4; }
+
+/* ── Card Help Tooltips ── */
+.card-help { display: inline-flex; align-items: center; justify-content: center; width: 1.1rem; height: 1.1rem; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: var(--text-soft); font-size: 0.6rem; font-weight: 700; cursor: help; position: relative; margin-left: 0.4rem; vertical-align: middle; transition: all 150ms ease; }
+.card-help:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.card-help .card-tip { display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #1a1a2e; color: #e4e4f0; font-size: 0.78rem; font-weight: 400; line-height: 1.45; padding: 0.65rem 0.85rem; border-radius: 0.5rem; border: 1px solid #2d2d44; box-shadow: 0 8px 24px rgba(0,0,0,0.4); width: 220px; white-space: normal; text-transform: none; letter-spacing: 0; z-index: 100; }
+.card-help .card-tip::after { content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: #2d2d44; }
+.card-help:hover .card-tip { display: block; }
+.light .card-help { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.1); }
+.light .card-help .card-tip { background: #fff; color: #1a1a2e; border-color: #dfe3ec; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.light .card-help .card-tip::after { border-top-color: #dfe3ec; }
+
 .dark .card:hover { border-color: #3b3c49; }
 .dark .card .value { color: #f5f7ff; }
 .dark .card .card-subtext { color: #9ea4b8; }
@@ -1131,12 +1142,15 @@ function renderSummaryCards(issues) {
   const riskShare = total ? Math.round((riskIssues.length / total) * 100) : 0;
   const backlogShare = total ? Math.round((backlog / total) * 100) : 0;
 
+  // Tooltip helper
+  const tip = (text) => `<span class="card-help">?<span class="card-tip">${text}</span></span>`;
+
   // Early stage: only show relevant cards
   const cards = [];
 
   cards.push(`
     <article class="card">
-      <div class="label">Toil Signals</div>
+      <div class="label">Toil Signals ${tip('Total number of repetitive tasks your team has reported. Each GitHub Issue labeled "toil" counts as one signal.')}</div>
       <div class="value"><span class="value-number" data-animate="${total}" data-format="number">${total}</span></div>
       <p class="card-subtext">${backlog} in backlog · ${inProgress} building · ${automated} shipped</p>
       <div class="micro-progress"><span style="width:${Math.min(automationRate, 100)}%"></span></div>
@@ -1144,7 +1158,7 @@ function renderSummaryCards(issues) {
 
   cards.push(`
     <article class="card emerald">
-      <div class="label">⚡ Hours Saved / Month</div>
+      <div class="label">⚡ Hours Saved / Month ${tip('Estimated hours your team saves each month from automating toil. Calculated from frequency × time × people affected for each issue.')}</div>
       <div class="value"><span class="value-number" data-animate="${hoursSaved}" data-format="hours">${hoursSaved.toFixed(1)}</span><sup>hrs</sup></div>
       <p class="card-subtext">≈ ${fteRecovered.toFixed(1)} FTEs given back</p>
       <div class="micro-progress" data-color="success"><span style="width:${Math.min(mitigationRate, 100)}%"></span></div>
@@ -1153,7 +1167,7 @@ function renderSummaryCards(issues) {
   if (automated > 0) {
     cards.push(`
     <article class="card">
-      <div class="label">Automation Velocity</div>
+      <div class="label">Automation Velocity ${tip('Percentage of reported toil that has been fully automated. Tracks issues that move to "automated" or "closed" status.')}</div>
       <div class="value"><span class="value-number" data-animate="${automationRate}" data-format="percent">${automationRate}%</span></div>
       <div class="delta ${deltaClass}">${deltaLabel}</div>
       <p class="card-subtext">${automated} of ${total} toil signals retired</p>
@@ -1161,7 +1175,7 @@ function renderSummaryCards(issues) {
   } else {
     cards.push(`
     <article class="card card-teaser">
-      <div class="label">Automation Velocity</div>
+      <div class="label">Automation Velocity ${tip('Percentage of reported toil that has been fully automated. This card lights up when you close your first toil issue as automated.')}</div>
       <div class="value"><span class="value-number">0%</span></div>
       <div class="delta positive" style="opacity:0.5">🔓 Ships with your first automation</div>
       <p class="card-subtext">0 of ${total} toil signals retired</p>
@@ -1172,7 +1186,7 @@ function renderSummaryCards(issues) {
   if (riskIssues.length > 0) {
     cards.push(`
     <article class="card">
-      <div class="label">Critical Hotspots</div>
+      <div class="label">Critical Hotspots ${tip('Issues with a toil score of 40+. These are high-frequency, time-consuming tasks affecting many people — your biggest ROI opportunities.')}</div>
       <div class="value"><span class="value-number" data-animate="${riskIssues.length}" data-format="number">${riskIssues.length}</span></div>
       <p class="card-subtext">${riskShare}% of backlog is 🔴 critical</p>
       <div class="micro-progress" data-color="danger"><span style="width:${Math.min(riskShare, 100)}%"></span></div>
@@ -1180,7 +1194,7 @@ function renderSummaryCards(issues) {
   } else {
     cards.push(`
     <article class="card card-teaser">
-      <div class="label">Critical Hotspots</div>
+      <div class="label">Critical Hotspots ${tip('Issues with a toil score of 40+. Score = frequency × time × people + bonuses. This card appears when high-impact toil is reported.')}</div>
       <div class="value"><span class="value-number">0</span></div>
       <p class="card-subtext">🔓 Appears when toil scores ≥ 40</p>
       <div class="micro-progress" data-color="danger"><span style="width:15%"></span></div>
