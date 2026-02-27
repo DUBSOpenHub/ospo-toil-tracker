@@ -93,9 +93,10 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 .micro-progress[data-color="danger"] span { background: linear-gradient(90deg, #f87171, #f43f5e); }
 .card.emerald { background: linear-gradient(135deg, #f0fdf4, #f0f9ff); }
 .dark .card { background: #111117; border: 1px solid #27272a; box-shadow: var(--shadow-sm); }
-.dark .card.emerald { background: linear-gradient(135deg, #0a1a14, #0d1520); border-color: #1a3a2a; }
-.card.card-teaser { opacity: 0.55; border-style: dashed; }
-.card.card-teaser:hover { opacity: 0.75; }
+.dark .card.emerald, :root:not(.light) .card.emerald { background: linear-gradient(135deg, #0a1a14, #0d1520) !important; border-color: #1a3a2a !important; }
+.card.card-teaser { border-style: dashed; }
+.card.card-teaser .value { opacity: 0.35; }
+.card.card-teaser .micro-progress span { width: 15% !important; opacity: 0.4; }
 .dark .card:hover { border-color: #3b3c49; }
 .dark .card .value { color: #f5f7ff; }
 .dark .card .card-subtext { color: #9ea4b8; }
@@ -296,7 +297,7 @@ td.editable input, td.editable select { font-size: 0.82rem; padding: 0.2rem 0.35
 @media (prefers-color-scheme: dark) { :root:not(.light) .card { background: #111117; border-color: #23242f; } }
 
 .dark .card.emerald,
-@media (prefers-color-scheme: dark) { :root:not(.light) .card.emerald { background: linear-gradient(135deg, #0a1a14, #0d1520); border-color: #1a3a2a; } }
+@media (prefers-color-scheme: dark) { :root:not(.light) .card.emerald { background: linear-gradient(135deg, #0a1a14, #0d1520) !important; border-color: #1a3a2a !important; } }
 
 .dark .card:hover,
 @media (prefers-color-scheme: dark) { :root:not(.light) .card:hover { box-shadow: var(--shadow-md); border-color: #3b3c49; } }
@@ -1161,9 +1162,10 @@ function renderSummaryCards(issues) {
     cards.push(`
     <article class="card card-teaser">
       <div class="label">Automation Velocity</div>
-      <div class="value" style="color:var(--text-soft);opacity:0.4">—</div>
-      <p class="card-subtext">Unlocks when first toil is automated</p>
-      <div class="micro-progress"><span style="width:0%"></span></div>
+      <div class="value"><span class="value-number">0%</span></div>
+      <div class="delta positive" style="opacity:0.5">🔓 Ships with your first automation</div>
+      <p class="card-subtext">0 of ${total} toil signals retired</p>
+      <div class="micro-progress"><span style="width:15%"></span></div>
     </article>`);
   }
 
@@ -1179,9 +1181,9 @@ function renderSummaryCards(issues) {
     cards.push(`
     <article class="card card-teaser">
       <div class="label">Critical Hotspots</div>
-      <div class="value" style="color:var(--text-soft);opacity:0.4">—</div>
-      <p class="card-subtext">Tracks high-impact toil (score ≥ 40)</p>
-      <div class="micro-progress"><span style="width:0%"></span></div>
+      <div class="value"><span class="value-number">0</span></div>
+      <p class="card-subtext">🔓 Appears when toil scores ≥ 40</p>
+      <div class="micro-progress" data-color="danger"><span style="width:15%"></span></div>
     </article>`);
   }
 
