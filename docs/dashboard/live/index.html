@@ -119,7 +119,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 
 /* ── Insight Panels ── */
 .insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.25rem; align-items: stretch; }
-.insight-card { background: rgba(17,17,23,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 1.25rem; box-shadow: 0 0 0 1px rgba(255,255,255,0.02), 0 2px 8px rgba(0,0,0,0.15); position: relative; overflow: visible; transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1); animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards; display: flex; flex-direction: column; backdrop-filter: blur(12px); min-height: 220px; }
+.insight-card { background: rgba(17,17,23,0.5); border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius); padding: 1.25rem; box-shadow: 0 0 0 1px rgba(255,255,255,0.02), 0 2px 8px rgba(0,0,0,0.15); position: relative; overflow: visible; transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1); animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards; display: flex; flex-direction: column; backdrop-filter: blur(12px); }
 .insight-card:nth-child(1) { animation-delay: 0.08s; }
 .insight-card:nth-child(2) { animation-delay: 0.12s; }
 .insight-card:nth-child(3) { animation-delay: 0.16s; }
@@ -132,13 +132,26 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 .mini-pill { font-size: 0.62rem; padding: 0.15rem 0.5rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.08); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; }
 .mini-pill.live { border-color: rgba(74,222,128,0.25); color: #4ade80; background: rgba(74,222,128,0.06); animation: pulseGlow 3s ease-in-out infinite; }
 .insight-body { display: flex; gap: 1.25rem; flex-wrap: wrap; align-items: center; justify-content: center; flex: 1; position: relative; z-index: 1; }
-.radial-progress { --size: 100px; --progress: 0deg; width: var(--size); height: var(--size); border-radius: 50%; background: conic-gradient(#a855f7 var(--progress), rgba(168,85,247,0.1) var(--progress), rgba(168,85,247,0.1) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; position: relative; box-shadow: 0 0 20px rgba(168,85,247,0.1), 0 0 0 2px rgba(168,85,247,0.08); }
-.radial-progress::after { content: ""; position: absolute; inset: 8px; background: rgba(5,4,7,0.95); border-radius: 50%; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
-.radial-progress strong { position: relative; z-index: 1; font-size: 1.3rem; font-weight: 700; color: #f5f7ff; line-height: 1.2; }
-.radial-progress span { position: relative; z-index: 1; font-size: 0.5rem; color: rgba(158,164,184,0.5); text-transform: uppercase; letter-spacing: 0.12em; line-height: 1; }
+.radial-progress { --size: 80px; --progress: 0deg; width: var(--size); height: var(--size); border-radius: 50%; background: conic-gradient(#a855f7 var(--progress), rgba(168,85,247,0.1) var(--progress), rgba(168,85,247,0.1) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; position: relative; box-shadow: 0 0 20px rgba(168,85,247,0.1), 0 0 0 2px rgba(168,85,247,0.08); }
+.radial-progress::after { content: ""; position: absolute; inset: 6px; background: rgba(5,4,7,0.95); border-radius: 50%; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+.radial-progress strong { position: relative; z-index: 1; font-size: 1.05rem; font-weight: 700; color: #f5f7ff; line-height: 1.2; }
+.radial-progress span { position: relative; z-index: 1; font-size: 0.4rem; color: rgba(158,164,184,0.5); text-transform: uppercase; letter-spacing: 0.12em; line-height: 1; }
 .stat-list { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; position: relative; z-index: 1; }
 .stat-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: rgba(158,164,184,0.6); }
 .stat-row strong { font-size: 1.1rem; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.stat-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.stat-dot-green { background: #4ade80; }
+.stat-dot-purple { background: #a855f7; }
+.stat-dot-amber { background: #fbbf24; }
+.stat-dot-slate { background: #94a3b8; }
+.stat-val-green { color: #16a34a !important; }
+.stat-val-purple { color: #7c3aed !important; }
+.stat-val-amber { color: #d97706 !important; }
+.stat-val-slate { color: #64748b !important; }
+.dark .stat-val-green { color: #4ade80 !important; }
+.dark .stat-val-purple { color: #c084fc !important; }
+.dark .stat-val-amber { color: #fbbf24 !important; }
+.dark .stat-val-slate { color: #cbd5e1 !important; }
 .risk-list { display: flex; flex-direction: column; gap: 0.75rem; }
 .risk-row { display: flex; justify-content: space-between; gap: 1rem; }
 .risk-row p { font-weight: 600; color: var(--text-primary); }
@@ -233,10 +246,14 @@ td.editable input, td.editable select { font-size: 0.82rem; padding: 0.2rem 0.35
 /* ── Toil Name Cell ── */
 .toil-name { font-weight: 600; font-size: 0.85rem; color: #e2e8f0; line-height: 1.4; letter-spacing: -0.01em; }
 .toil-desc { font-size: 0.75rem; color: rgba(158,164,184,0.65); margin-top: 0.2rem; line-height: 1.5; font-weight: 400; }
+.issue-link { color: #c084fc; font-weight: 600; text-decoration: none; }
+.issue-link:hover { color: #a855f7; text-decoration: underline; }
+.light .issue-link { color: #7c3aed; }
+.light .issue-link:hover { color: #6d28d9; }
 .toil-cell { min-width: 320px; padding-top: 1.25rem; padding-bottom: 1.25rem; }
-.toil-action-cell { white-space: nowrap; display: flex; flex-direction: column; gap: 0.4rem; align-items: flex-start; }
-.status-toggle { cursor: pointer; transition: all 150ms ease; }
-.status-toggle:hover { filter: brightness(1.15); transform: scale(1.05); }
+.toil-action-cell { white-space: nowrap; display: flex; flex-direction: row; gap: 0.5rem; align-items: center; }
+.status-toggle { cursor: pointer; transition: all 200ms ease; }
+.status-toggle:hover { filter: brightness(1.2); transform: scale(1.05); }
 
 /* ── Toast ── */
 .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: #111117; color: #f5f7ff; padding: 0.75rem 1.25rem; border-radius: var(--radius); font-size: 0.875rem; font-weight: 500; z-index: 9999; opacity: 0; transform: translateY(10px); transition: all 150ms ease; pointer-events: none; border: 1px solid #27272a; box-shadow: var(--shadow-md); }
@@ -1370,10 +1387,10 @@ function renderPipelineCard(issues) {
     <div class="insight-body">
       <div class="radial-progress"><strong>${automationRate}%</strong><span>Automated</span></div>
       <div class="stat-list">
-        <div class="stat-row"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block"></span>Automated</span><strong style="color:#4ade80">${counts.shipped}</strong></div>
-        <div class="stat-row"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#a855f7;display:inline-block"></span>Building</span><strong style="color:#c084fc">${counts.building}</strong></div>
-        <div class="stat-row"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#fbbf24;display:inline-block"></span>Triage</span><strong style="color:#fbbf24">${counts.triage}</strong></div>
-        <div class="stat-row"><span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#cbd5e1;display:inline-block"></span>Backlog</span><strong style="color:#cbd5e1">${counts.backlog}</strong></div>
+        <div class="stat-row"><span style="display:flex;align-items:center;gap:6px"><span class="stat-dot stat-dot-green"></span>Automated</span><strong class="stat-val-green">${counts.shipped}</strong></div>
+        <div class="stat-row"><span style="display:flex;align-items:center;gap:6px"><span class="stat-dot stat-dot-purple"></span>Building</span><strong class="stat-val-purple">${counts.building}</strong></div>
+        <div class="stat-row"><span style="display:flex;align-items:center;gap:6px"><span class="stat-dot stat-dot-amber"></span>Triage</span><strong class="stat-val-amber">${counts.triage}</strong></div>
+        <div class="stat-row"><span style="display:flex;align-items:center;gap:6px"><span class="stat-dot stat-dot-slate"></span>Backlog</span><strong class="stat-val-slate">${counts.backlog}</strong></div>
       </div>
     </div>
   `;
@@ -1627,7 +1644,7 @@ function renderToilTable(issues) {
     const actionBtn = `<button class="btn btn-launch" onclick="copyLaunchCmd(this, ${issue.number})" data-cmd="${esc(ghCmd, true)}" title="Copies a ready-to-use prompt to your clipboard. Paste it into GitHub Copilot CLI, Copilot Chat, or any AI assistant to start automating this toil.">⚡ Generate Copilot Prompt</button>`;
 
     return `<tr class="${priorityClass(issue.toil_score)}">
-      <td><a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="color:#0969da;font-weight:600;">#${issue.number}</a></td>
+      <td><a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="issue-link">#${issue.number}</a></td>
       <td class="toil-cell"><div class="toil-name">${esc(toilName)}</div>${toilDesc ? `<div class="toil-desc">${esc(toilDesc)}</div>` : ''}</td>
       <td class="toil-action-cell">${actionBtn} ${statusBadge(status, issue.number)}</td>
       <td>${esc(issue.submitter)}</td>
