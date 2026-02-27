@@ -434,7 +434,8 @@ td.editable input, td.editable select { font-size: 0.82rem; padding: 0.2rem 0.35
 <div class="header">
   <div class="hero-left">
     <p class="hero-eyebrow">Live Data · DUBSOpenHub/ai-first-toil-tracker</p>
-    <h1>⚡ Open Source Programs Team</h1>
+    <h1>⚡ AI Toil Tracker</h1>
+    <p id="teamName" title="Click to rename your team" style="cursor:pointer;font-size:1.15rem;font-weight:600;color:rgba(255,255,255,0.88);margin-top:0.1rem">Open Source Programs Team ✎</p>
     <p class="hero-subtitle">Real-time view of your team's toil issues. Data pulled directly from GitHub Issues.</p>
     <div class="hero-pulse" id="heroPulse">
       <span class="pulse-pill neutral">⚡ Scanning for toil…</span>
@@ -809,7 +810,21 @@ function normalizeData(raw) {
 }
 
 async function loadData() {
-  // Live dashboard: fetch directly from GitHub API
+  // Try the workflow-generated JSON first (works locally and on Pages)
+  try {
+    const res = await fetch('../dashboard-data.json');
+    if (res.ok) {
+      const json = await res.json();
+      if (json.issues && json.issues.length > 0) {
+        dashboardData = normalizeData(json);
+        applyLocalEdits();
+        render();
+        return;
+      }
+    }
+  } catch (_) { /* fall through */ }
+
+  // Fallback: GitHub API (works for public repos or with token)
   try {
     const apiUrl = `https://api.github.com/repos/${CONFIG.fullRepo}/issues?labels=toil&state=all&per_page=100`;
     const res = await fetch(apiUrl);
@@ -822,9 +837,7 @@ async function loadData() {
         return;
       }
     }
-  } catch (err) {
-    console.error('GitHub API fetch failed:', err);
-  }
+  } catch (_) { /* fall through */ }
 
   // No data — show empty state
   dashboardData = { repo: CONFIG.fullRepo, generated_at: new Date().toISOString(), issues: [] };
@@ -1702,6 +1715,25 @@ function exportJSON() {
   downloadFile(JSON.stringify(data, null, 2), 'toil-tracker-export.json', 'application/json');
   showToast('📥 JSON downloaded');
 }
+
+// ═══════════════════════════════════════════════════
+// EDITABLE TEAM NAME (persisted to localStorage)
+// ═══════════════════════════════════════════════════
+(function() {
+  const el = document.getElementById('teamName');
+  const key = 'toilDashTeamName';
+  const saved = localStorage.getItem(key);
+  if (saved) el.textContent = saved + ' ✎';
+
+  el.addEventListener('click', function() {
+    const current = el.textContent.replace(/\s*✎$/, '');
+    const name = prompt('Enter your team name:', current);
+    if (name !== null && name.trim()) {
+      el.textContent = name.trim() + ' ✎';
+      localStorage.setItem(key, name.trim());
+    }
+  });
+})();
 
 // ═══════════════════════════════════════════════════
 // INIT
