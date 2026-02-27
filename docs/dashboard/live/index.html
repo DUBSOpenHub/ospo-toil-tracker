@@ -1065,12 +1065,20 @@ function render() {
 
   // Hero + insight telemetry
   renderHeroPulse(issues);
+
+  // Hide panels that have no meaningful data yet
+  const hasMultipleIssues = issues.length > 1;
+  const hasAutomated = issues.some(i => getStatus(i) === 'automated');
+  const hasTeams = new Set(issues.map(i => i.team).filter(Boolean)).size > 1;
+
+  document.getElementById('insightsGrid').style.display = hasMultipleIssues ? '' : 'none';
+
   renderInsightPanels(issues);
 
-  // Trend chart
+  // Trend chart — only show if there's history
   renderTrendChart(issues);
 
-  // Team manager + breakdown
+  // Team manager + breakdown — only show with multiple teams
   renderTeamFocusCard(issues);
 
   // Main table
@@ -1128,33 +1136,56 @@ function renderSummaryCards(issues) {
   const riskShare = total ? Math.round((riskIssues.length / total) * 100) : 0;
   const backlogShare = total ? Math.round((backlog / total) * 100) : 0;
 
-  document.getElementById('summaryCards').innerHTML = `
+  // Early stage: only show relevant cards
+  const cards = [];
+
+  cards.push(`
     <article class="card">
-      <div class="label">Automation Velocity</div>
-      <div class="value"><span class="value-number" data-animate="${automationRate}" data-format="percent">${automationRate}%</span></div>
-      <div class="delta ${deltaClass}">${deltaLabel}</div>
-      <p class="card-subtext">${automated} of ${total} toil signals retired</p>
+      <div class="label">Toil Signals</div>
+      <div class="value"><span class="value-number" data-animate="${total}" data-format="number">${total}</span></div>
+      <p class="card-subtext">${backlog} in backlog · ${inProgress} building · ${automated} shipped</p>
       <div class="micro-progress"><span style="width:${Math.min(automationRate, 100)}%"></span></div>
-    </article>
+    </article>`);
+
+  cards.push(`
     <article class="card emerald">
       <div class="label">⚡ Hours Saved / Month</div>
       <div class="value"><span class="value-number" data-animate="${hoursSaved}" data-format="hours">${hoursSaved.toFixed(1)}</span><sup>hrs</sup></div>
       <p class="card-subtext">≈ ${fteRecovered.toFixed(1)} FTEs given back</p>
       <div class="micro-progress" data-color="success"><span style="width:${Math.min(mitigationRate, 100)}%"></span></div>
-    </article>
+    </article>`);
+
+  if (automated > 0) {
+    cards.push(`
+    <article class="card">
+      <div class="label">Automation Velocity</div>
+      <div class="value"><span class="value-number" data-animate="${automationRate}" data-format="percent">${automationRate}%</span></div>
+      <div class="delta ${deltaClass}">${deltaLabel}</div>
+      <p class="card-subtext">${automated} of ${total} toil signals retired</p>
+    </article>`);
+  }
+
+  if (riskIssues.length > 0) {
+    cards.push(`
     <article class="card">
       <div class="label">Critical Hotspots</div>
       <div class="value"><span class="value-number" data-animate="${riskIssues.length}" data-format="number">${riskIssues.length}</span></div>
       <p class="card-subtext">${riskShare}% of backlog is 🔴 critical</p>
       <div class="micro-progress" data-color="danger"><span style="width:${Math.min(riskShare, 100)}%"></span></div>
-    </article>
+    </article>`);
+  }
+
+  if (total > 2) {
+    cards.push(`
     <article class="card">
       <div class="label">Avg Payoff / Idea</div>
       <div class="value"><span class="value-number" data-animate="${avgHoursPerIdea}" data-format="hours">${avgHoursPerIdea.toFixed(1)}</span><sup>hrs</sup></div>
       <p class="card-subtext">Teams burn ${weeklyBurn.toFixed(1)} hrs/week on toil</p>
       <div class="micro-progress" data-color="warning"><span style="width:${Math.min(backlogShare, 100)}%"></span></div>
-    </article>
-  `;
+    </article>`);
+  }
+
+  document.getElementById('summaryCards').innerHTML = cards.join('');
   animateSummaryNumbers();
 }
 
