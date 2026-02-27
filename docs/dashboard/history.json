@@ -29,9 +29,9 @@
   },
   {
     "date": "2026-02-27",
-    "totalToil": 0,
-    "openToil": 0,
+    "totalToil": 1,
+    "openToil": 1,
     "automated": 0,
-    "monthlyMinutes": null
+    "monthlyMinutes": 3
   }
 ]

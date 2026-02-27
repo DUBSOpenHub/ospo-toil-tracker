@@ -1,17 +1,42 @@
 {
   "meta": {
-    "generatedAt": "2026-02-27T21:17:02Z",
+    "generatedAt": "2026-02-27T21:26:05Z",
     "repo": "DUBSOpenHub/ai-toil-tracker",
     "labels": {
       "toil": "toil",
       "automated": "automated"
     },
     "summary": {
-      "totalToil": 0,
-      "openToil": 0,
+      "totalToil": 1,
+      "openToil": 1,
       "automated": 0,
-      "monthlyMinutes": null
+      "monthlyMinutes": 3
     }
   },
-  "issues": []
+  "issues": [
+    {
+      "number": 17,
+      "title": "Scheduling 6 Month Check-ins with project maintainers",
+      "state": "OPEN",
+      "url": "https://github.com/DUBSOpenHub/ai-toil-tracker/issues/17",
+      "author": "DUBSOpenHub",
+      "createdAt": "2026-02-27T21:16:53Z",
+      "updatedAt": "2026-02-27T21:25:57Z",
+      "scoring": {
+        "frequency": 1,
+        "time": 1,
+        "people": 1,
+        "base": 1,
+        "bonusCount": 0,
+        "bonusPoints": 0,
+        "adjusted": 1,
+        "priority": "low"
+      },
+      "roi": {
+        "monthlyMins": 3,
+        "monthlySavedText": "~3 minutes/month"
+      },
+      "automated": false
+    }
+  ]
 }
