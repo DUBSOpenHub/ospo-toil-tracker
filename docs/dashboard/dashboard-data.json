@@ -1,17 +1,42 @@
 {
-  "generatedAt": "",
-  "repository": "DUBSOpenHub/ospo-toil-tracker",
-  "summary": {
-    "totalToilItems": 0,
-    "openToilItems": 0,
-    "automatedItems": 0,
-    "totalWins": 0,
-    "totalMonthlyMinutes": 0,
-    "totalMonthlySaved": "~0 minutes/month"
+  "meta": {
+    "generatedAt": "2026-02-27T21:35:46Z",
+    "repo": "DUBSOpenHub/ospo-toil-tracker",
+    "labels": {
+      "toil": "toil",
+      "automated": "automated"
+    },
+    "summary": {
+      "totalToil": 1,
+      "openToil": 1,
+      "automated": 0,
+      "monthlyMinutes": 3
+    }
   },
-  "byCategory": [],
-  "byTeam": [],
-  "topItems": [],
-  "toilItems": [],
-  "wins": []
+  "issues": [
+    {
+      "number": 2,
+      "title": "Scheduling 6 Month Check-ins with project maintainers",
+      "state": "OPEN",
+      "url": "https://github.com/DUBSOpenHub/ospo-toil-tracker/issues/2",
+      "author": "DUBSOpenHub",
+      "createdAt": "2026-02-27T21:16:53Z",
+      "updatedAt": "2026-02-27T21:35:41Z",
+      "scoring": {
+        "frequency": 1,
+        "time": 1,
+        "people": 1,
+        "base": 1,
+        "bonusCount": 0,
+        "bonusPoints": 0,
+        "adjusted": 1,
+        "priority": "low"
+      },
+      "roi": {
+        "monthlyMins": 3,
+        "monthlySavedText": "~3 minutes/month"
+      },
+      "automated": false
+    }
+  ]
 }
