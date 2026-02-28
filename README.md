@@ -10,7 +10,7 @@ Every team has busywork - the manual, repetitive tasks that eat up time and coul
 
 <p align="center">
   <a href="https://dubsopenhub.github.io/ospo-toil-tracker/dashboard/live/">
-    <img src="docs/assets/dashboard-preview.png" alt="OSPO Toil Tracker Dashboard" width="720">
+    <img src="docs/assets/dashboard-preview.png?v=2" alt="OSPO Toil Tracker Dashboard" width="720">
   </a>
 </p>
 
