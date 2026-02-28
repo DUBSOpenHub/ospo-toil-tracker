@@ -13,7 +13,7 @@ Please [open an issue](../../issues/new/choose) using one of our templates:
 ## 💬 Questions & Discussion
 
 - **GitHub Discussions** — ask questions, share tips, and connect with other teams using the [Discussions](../../discussions) tab
-- **Slack** — check your team's `#ai-toil-tracker` channel (if configured)
+- **Slack** — check your team's `#ospo-toil-tracker` channel (if configured)
 
 ## 📖 Documentation
 
