@@ -30,6 +30,8 @@ Every team has busywork - the manual, repetitive tasks that eat up time and coul
 
 > 🎯 **[See the live demo dashboard →](https://dubsopenhub.github.io/ai-toil-tracker/dashboard/)** — See what a fully loaded toil tracker looks like with sample data.
 
+> 📊 **[Open our team dashboard →](https://dubsopenhub.github.io/ospo-toil-tracker/dashboard/live/)** — Live data from our OSPO toil tracking.
+
 ## How AI Is Used
 
 This isn't just a tracker - AI is built into the workflow:
