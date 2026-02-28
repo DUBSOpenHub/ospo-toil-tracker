@@ -33,5 +33,12 @@
     "openToil": 1,
     "automated": 0,
     "monthlyMinutes": 3
+  },
+  {
+    "date": "2026-02-28",
+    "totalToil": 1,
+    "openToil": 1,
+    "automated": 0,
+    "monthlyMinutes": 3
   }
 ]
